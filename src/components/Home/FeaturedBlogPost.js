@@ -4,8 +4,9 @@ const FeaturedBlogPost = ({
 }) => {
     const onDetailsClick = (e) => {
         e.preventDefault();
+
         navigationChangeHandler(`/details/${blogPost._id}`);
-    }
+    };
 
     return (
         <div className="card">

@@ -8,11 +8,13 @@ const Header = ({
 
         if (e.target.tagName == 'A') {
             url = new URL(e.target.href);
+
+            navigationChangeHandler(url.pathname);
         } else if (e.target.tagName == 'IMG') {
             url = new URL(e.target.parentElement.href);
-        }
 
-        navigationChangeHandler(url.pathname);
+            navigationChangeHandler(url.pathname);
+        }
     };
 
     return (
