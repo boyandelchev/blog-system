@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Route, Switch } from 'react-router-dom';
 
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
@@ -7,32 +7,16 @@ import Home from './components/Home/Home';
 import BlogPostDetails from './components/BlogPostDetails/BlogPostDetails';
 
 function App() {
-    const [page, setPage] = useState('/home');
-
-    const navigationChangeHandler = (path) => {
-        setPage(path);
-    };
-
-    const router = (path) => {
-        let pathNames = path.split('/');
-
-        let rootPath = pathNames[1];
-        let argument = pathNames[2];
-
-        const routes = {
-            'home': <Home navigationChangeHandler={navigationChangeHandler} />,
-            'details': <BlogPostDetails id={argument} />,
-        };
-
-        return routes[rootPath]
-    };
-
     return (
         <div className="App">
-            <Header navigationChangeHandler={navigationChangeHandler} />
+            <Header />
 
             <main id="main-content">
-                {router(page) || <ErrorPage />}
+                <Switch>
+                    <Route path="/" exact component={Home} />
+                    <Route path="/blog-posts/:blogPostId" component={BlogPostDetails} />
+                    <Route component={ErrorPage} />
+                </Switch>
             </main>
 
             <Footer />

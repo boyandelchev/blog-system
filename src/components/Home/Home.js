@@ -5,9 +5,7 @@ import * as blogPostService from '../../services/blogPostService';
 import FeaturedBlogPost from './FeaturedBlogPost';
 import BlogPost from './BlogPost';
 
-const Home = ({
-    navigationChangeHandler,
-}) => {
+const Home = () => {
     const [blogPosts, setBlogPosts] = useState([]);
 
     useEffect(() => {
@@ -37,7 +35,6 @@ const Home = ({
                                 <FeaturedBlogPost
                                     key={x._id}
                                     blogPost={x}
-                                    navigationChangeHandler={navigationChangeHandler}
                                 />)
                             : <p>No Featured Blog Posts</p>
                     }
@@ -55,7 +52,6 @@ const Home = ({
                                 <BlogPost
                                     key={x._id}
                                     blogPost={x}
-                                    navigationChangeHandler={navigationChangeHandler}
                                 />)
                             : <p>No Blog Posts</p>
                     }
