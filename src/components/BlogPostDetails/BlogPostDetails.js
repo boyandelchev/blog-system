@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
+import { useParams } from 'react-router-dom';
 
 import * as blogPostService from '../../services/blogPostService';
 
-const BlogPostDetails = ({
-    match,
-}) => {
+const BlogPostDetails = () => {
     const [blogPost, setBlogPost] = useState({});
+    const { blogPostId } = useParams();
 
     useEffect(() => {
-        blogPostService.getOne(match.params.blogPostId)
+        blogPostService.getOne(blogPostId)
             .then(result => {
                 setBlogPost(result);
             })
@@ -27,7 +27,7 @@ const BlogPostDetails = ({
                                     <a href="author.html"><img className="author-thumb" src="https://www.gravatar.com/avatar/e56154546cf4be74e393c62d1ae9f9d4?s=250&amp;d=mm&amp;r=x" alt="Sal" /></a>
                                 </div>
                                 <div className="col-md-10">
-                                    <a className="link-dark" href="author.html">Sal</a><a href="#" className="btn follow">Follow</a>
+                                    <a className="link-dark" href="author.html">Sal</a>
                                     <span className="author-description">Founder of WowThemes.net and creator of <b>"Mediumish"</b> theme that you're currently previewing. Developing professional premium themes, templates, plugins, scripts since 2012.</span>
                                     <span className="post-date">{blogPost.createdOn}</span>
                                 </div>
@@ -45,10 +45,10 @@ const BlogPostDetails = ({
 
                         <div className="after-post-tags">
                             <ul className="tags">
-                                <li><a href="#">Design</a></li>
-                                <li><a href="#">Growth Mindset</a></li>
-                                <li><a href="#">Productivity</a></li>
-                                <li><a href="#">Personal Growth</a></li>
+                                {/* {blogPost.categories
+                                    ? blogPost.categories.map(x => (<li><a href="#">{x}</a></li>))
+                                    : ''
+                                } */}
                             </ul>
                         </div>
 

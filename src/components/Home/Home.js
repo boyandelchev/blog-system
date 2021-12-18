@@ -11,7 +11,7 @@ const Home = () => {
     useEffect(() => {
         blogPostService.getAll()
             .then(result => {
-                setBlogPosts(Object.values(result));
+                setBlogPosts(result);
             });
     }, []);
 
@@ -29,31 +29,21 @@ const Home = () => {
                     <h2><span>Featured</span></h2>
                 </div>
                 <div className="card-columns listfeaturedtag">
-                    {
-                        blogPosts.length > 0
-                            ? blogPosts.map(x =>
-                                <FeaturedBlogPost
-                                    key={x._id}
-                                    blogPost={x}
-                                />)
-                            : <p>No Featured Blog Posts</p>
+                    {blogPosts.length > 0
+                        ? blogPosts.map(x => <FeaturedBlogPost key={x._id} blogPost={x} />)
+                        : <p>No Featured Blog Posts</p>
                     }
                 </div>
             </section>
 
             <section className="recent-posts">
                 <div className="section-title">
-                    <h2><span>All Stories</span></h2>
+                    <h2><span>All Recent Posts</span></h2>
                 </div>
                 <div className="card-columns listrecent">
-                    {
-                        blogPosts.length > 0
-                            ? blogPosts.map(x =>
-                                <BlogPost
-                                    key={x._id}
-                                    blogPost={x}
-                                />)
-                            : <p>No Blog Posts</p>
+                    {blogPosts.length > 0
+                        ? blogPosts.map(x => <BlogPost key={x._id} blogPost={x} />)
+                        : <p>No Blog Posts</p>
                     }
                 </div>
             </section>

@@ -18,6 +18,9 @@ const Header = ({
     let userNavigation = (
         <>
             <li className="nav-item">
+                <NavLink className={({ isActive }) => "nav-link" + (isActive ? " btn btn-outline-secondary" : "")} to="/blog-post-create">Create a Post</NavLink>
+            </li>
+            <li className="nav-item">
                 <NavLink className={({ isActive }) => "nav-link" + (isActive ? " btn btn-outline-secondary" : "")} to="/my-posts">My Posts</NavLink>
             </li>
             <li className="nav-item">

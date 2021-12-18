@@ -9,6 +9,7 @@ import Login from './components/Login';
 import Logout from './components/Logout';
 import Register from './components/Register';
 import MyBlogPosts from './components/MyBlogPosts';
+import BlogPostCreate from './components/BlogPostCreate';
 import BlogPostDetails from './components/BlogPostDetails';
 import Footer from './components/Footer';
 import ErrorPage from './components/ErrorPage';
@@ -50,7 +51,8 @@ function App() {
                     <Route path="/logout" element={<Logout onLogout={onLogout} />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/my-posts" element={<MyBlogPosts />} />
-                    <Route path="/blog-posts/:blogPostId" element={<BlogPostDetails />} />
+                    <Route path="/blog-post-create" element={<BlogPostCreate />} />
+                    <Route path="/blog-post-details/:blogPostId" element={<BlogPostDetails />} />
                     <Route path="/*" element={<ErrorPage />} />
                 </Routes>
             </main>
