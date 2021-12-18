@@ -1,6 +1,31 @@
 import { NavLink } from 'react-router-dom';
 
-const Header = () => {
+const Header = ({
+    isAuthenticated,
+    user,
+}) => {
+    let guestNavigation = (
+        <>
+            <li className="nav-item">
+                <NavLink className={({ isActive }) => "nav-link" + (isActive ? " btn btn-outline-secondary" : "")} to="/login">Login</NavLink>
+            </li>
+            <li className="nav-item">
+                <NavLink className={({ isActive }) => "nav-link" + (isActive ? " btn btn-outline-secondary" : "")} to="/register">Register</NavLink>
+            </li>
+        </>
+    );
+
+    let userNavigation = (
+        <>
+            <li className="nav-item">
+                <NavLink className={({ isActive }) => "nav-link" + (isActive ? " btn btn-outline-secondary" : "")} to="/my-posts">My Posts</NavLink>
+            </li>
+            <li className="nav-item">
+                <NavLink className={({ isActive }) => "nav-link" + (isActive ? " btn btn-outline-secondary" : "")} to="/logout">Logout</NavLink>
+            </li>
+        </>
+    );
+
     return (
         <header>
             <nav className="navbar navbar-toggleable-md navbar-light bg-white fixed-top mediumnavigation">
@@ -21,21 +46,13 @@ const Header = () => {
                     <div className="collapse navbar-collapse" id="navbarsExampleDefault">
 
                         <ul className="navbar-nav ml-auto">
-                            <li className="nav-item active">
-                                <NavLink className="nav-link" to="/">All Posts<span className="sr-only">(current)</span></NavLink>
-                            </li>
                             <li className="nav-item">
-                                <NavLink className="nav-link" to="/author">Author</NavLink>
+                                <NavLink className={({ isActive }) => "nav-link" + (isActive ? " btn btn-outline-secondary" : "")} to="/">All Posts<span className="sr-only">(current)</span></NavLink>
                             </li>
-                            <li className="nav-item">
-                                <NavLink className="nav-link" to="/login">Login</NavLink>
-                            </li>
-                            <li className="nav-item">
-                                <NavLink className="nav-link" to="/register">Register</NavLink>
-                            </li>
-                            <li className="nav-item">
-                                <NavLink className="nav-link" to="/logout">Logout</NavLink>
-                            </li>
+                            {isAuthenticated
+                                ? userNavigation
+                                : guestNavigation
+                            }
                         </ul>
 
                     </div>

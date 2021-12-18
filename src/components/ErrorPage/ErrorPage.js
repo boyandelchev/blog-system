@@ -5,7 +5,7 @@ const ErrorPage = ({
 }) => {
     return (
         <section className="error-page">
-            <h1>Page Not Found</h1>
+            <h1>Page does not exist</h1>
             {children && <p className="no-content">{children}</p>}
         </section>
     );

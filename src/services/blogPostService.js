@@ -5,7 +5,7 @@ export const getAll = () => {
         .then(res => res.json());
 };
 
-export const getOne = (id) => {
-    return fetch(`${baseUrl}/blogposts/${id}`)
+export const getOne = (blogPostId) => {
+    return fetch(`${baseUrl}/blogposts/${blogPostId}`)
         .then(res => res.json());
 };
