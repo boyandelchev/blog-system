@@ -53,6 +53,7 @@ function App() {
                     <Route path="/my-posts" element={<MyBlogPosts />} />
                     <Route path="/blog-post-create" element={<BlogPostCreate />} />
                     <Route path="/blog-post-details/:blogPostId" element={<BlogPostDetails />} />
+                    <Route path="/error" element={<ErrorPage />} />
                     <Route path="/*" element={<ErrorPage />} />
                 </Routes>
             </main>

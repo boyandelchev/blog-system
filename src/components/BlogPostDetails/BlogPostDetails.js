@@ -1,17 +1,21 @@
 import { useState, useEffect } from "react";
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import * as blogPostService from '../../services/blogPostService';
 
 const BlogPostDetails = () => {
     const [blogPost, setBlogPost] = useState({});
     const { blogPostId } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         blogPostService.getOne(blogPostId)
             .then(result => {
                 setBlogPost(result);
             })
+            .catch(result => {
+                navigate('/error');
+            });
     }, []);
 
     return (
@@ -45,10 +49,10 @@ const BlogPostDetails = () => {
 
                         <div className="after-post-tags">
                             <ul className="tags">
-                                {/* {blogPost.categories
-                                    ? blogPost.categories.map(x => (<li><a href="#">{x}</a></li>))
+                                {blogPost.categories
+                                    ? blogPost.categories.map(x => (<li key={x}><a href="#">{x}</a></li>))
                                     : ''
-                                } */}
+                                }
                             </ul>
                         </div>
 

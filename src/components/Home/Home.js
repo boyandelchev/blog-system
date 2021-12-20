@@ -12,6 +12,9 @@ const Home = () => {
         blogPostService.getAll()
             .then(result => {
                 setBlogPosts(result);
+            })
+            .catch(result => {
+                setBlogPosts([]);
             });
     }, []);
 

@@ -21,3 +21,9 @@ export const create = (blogPostData) => {
     })
         .then(res => res.json());
 };
+
+export const getAllCategories = () => {
+    return fetch(`${baseUrl}/categories`)
+        .then(res => res.json())
+        .then(res => Object.values(res));
+};

@@ -1,9 +1,27 @@
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import * as blogPostService from '../../services/blogPostService';
 
 const BlogPostCreate = () => {
+    const [categories, setCategories] = useState([]);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        blogPostService.getAllCategories()
+            .then(result => {
+                setCategories(result);
+            })
+            .catch(result => {
+                setCategories([]);
+            });
+    }, []);
+
+    let categoriesData;
+    if (categories.length > 0) {
+        [categoriesData] = categories;
+        categoriesData = categoriesData.categories;
+    }
 
     const onBlogPostCreate = (e) => {
         e.preventDefault();
@@ -12,13 +30,13 @@ const BlogPostCreate = () => {
         let title = formData.get('blog-post-create-title');
         let content = formData.get('blog-post-create-content');
         let imageUrl = formData.get('blog-post-create-image-url');
-        let category = formData.get('blog-post-create-category');
+        let categories = formData.getAll('blog-post-create-categories');
 
         blogPostService.create({
             title,
             content,
             imageUrl,
-            category,
+            categories,
         })
             .then(result => {
                 navigate('/');
@@ -43,8 +61,13 @@ const BlogPostCreate = () => {
                         <input type="text" name="blog-post-create-image-url" className="form-control" id="blog-post-create-image-url" placeholder="image URL" />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="blog-post-create-category">Category</label>
-                        <input type="text" name="blog-post-create-category" className="form-control" id="blog-post-create-category" placeholder="category" />
+                        <label htmlFor="blog-post-create-categories">Select categories</label>
+                        <select multiple className="form-control" id="blog-post-create-categories" name="blog-post-create-categories">
+                            {categories.length > 0
+                                ? categoriesData.map(x => <option key={x} value={x}>{x}</option>)
+                                : ''
+                            }
+                        </select>
                     </div>
                     <button type="submit" className="btn btn-primary">Create</button>
                 </form>
