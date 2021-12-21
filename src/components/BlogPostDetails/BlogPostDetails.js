@@ -57,7 +57,7 @@ const BlogPostDetails = () => {
                         </div>
 
                         <button type="button" className="btn btn-warning m-2"><Link to={`/blog-post-edit/${blogPost._id}`}>Edit</Link></button>
-                        <button type="button" className="btn btn-danger m-2">Delete</button>
+                        <button type="button" className="btn btn-danger m-2"><Link to={`/blog-post-delete/${blogPost._id}`}>Delete</Link></button>
 
                     </div>
 

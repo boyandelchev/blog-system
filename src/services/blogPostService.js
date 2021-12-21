@@ -33,6 +33,13 @@ export const edit = (blogPostData) => {
         .then(res => res.json());
 };
 
+export const deleteBlogPost = (blogPostId) => {
+    return fetch(`${baseUrl}/blogposts/${blogPostId}`, {
+        method: 'DELETE'
+    })
+        .then(res => res.json());
+};
+
 export const getAllCategories = () => {
     return fetch(`${baseUrl}/categories`)
         .then(res => res.json())
