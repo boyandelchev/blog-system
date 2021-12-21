@@ -39,6 +39,7 @@ const BlogPostEdit = () => {
         let content = formData.get('blog-post-create-content');
         let imageUrl = formData.get('blog-post-create-image-url');
         let categories = formData.getAll('blog-post-create-categories');
+        let createdOn = Date().substring(0, 24);
 
         blogPostService.edit({
             _id,
@@ -46,6 +47,7 @@ const BlogPostEdit = () => {
             content,
             imageUrl,
             categories,
+            createdOn,
         })
             .then(result => {
                 navigate(`/blog-post-details/${blogPostId}`);

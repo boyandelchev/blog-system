@@ -9,8 +9,8 @@ const BlogPost = ({
                 <img className="img-fluid" src={blogPost.imageUrl} alt="" />
             </Link>
             <div className="card-block">
-                <h2 className="card-title"><Link to={`/blog-post-details/${blogPost._id}`}>{blogPost.title}</Link></h2>
-                <h4 className="card-text">{blogPost.content}</h4>
+                <h2 className="card-title"><Link to={`/blog-post-details/${blogPost._id}`}>{blogPost.title.substring(0, 75)}</Link></h2>
+                <h4 className="card-text">{blogPost.content.substring(0, 125)}</h4>
                 <div className="metafooter">
                     <div className="wrapfooter">
                         <span className="meta-footer-thumb">
