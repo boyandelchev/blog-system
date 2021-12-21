@@ -22,6 +22,17 @@ export const create = (blogPostData) => {
         .then(res => res.json());
 };
 
+export const edit = (blogPostData) => {
+    return fetch(`${baseUrl}/blogposts/${blogPostData._id}`, {
+        method: 'PUT',
+        headers: {
+            'content-type': 'application/json',
+        },
+        body: JSON.stringify(blogPostData)
+    })
+        .then(res => res.json());
+};
+
 export const getAllCategories = () => {
     return fetch(`${baseUrl}/categories`)
         .then(res => res.json())

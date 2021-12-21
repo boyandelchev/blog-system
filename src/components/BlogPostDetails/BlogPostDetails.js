@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 
 import * as blogPostService from '../../services/blogPostService';
 
@@ -55,6 +55,9 @@ const BlogPostDetails = () => {
                                 }
                             </ul>
                         </div>
+
+                        <button type="button" className="btn btn-warning m-2"><Link to={`/blog-post-edit/${blogPost._id}`}>Edit</Link></button>
+                        <button type="button" className="btn btn-danger m-2">Delete</button>
 
                     </div>
 
