@@ -33,6 +33,6 @@ const FeaturedBlogPost = ({
             </div>
         </div>
     );
-}
+};
 
 export default FeaturedBlogPost;

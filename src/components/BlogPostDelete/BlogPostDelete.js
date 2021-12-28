@@ -76,6 +76,6 @@ const BlogPostDelete = () => {
             </div>
         </div>
     );
-}
+};
 
 export default BlogPostDelete;

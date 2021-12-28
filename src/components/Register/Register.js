@@ -1,12 +1,15 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { AuthContext } from '../../contexts/AuthContext';
 import * as authService from '../../services/authService';
 
+import './Register.css';
+
 const Register = () => {
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
+    const [error, setError] = useState('');
 
     const onRegisterHandler = (e) => {
         e.preventDefault();
@@ -36,9 +39,11 @@ const Register = () => {
                 })
                 .catch(err => {
                     console.log(err);
+                    setError(err);
                 });
         } catch (err) {
             console.log(err.message);
+            setError(err.message);
         }
     };
 
@@ -46,6 +51,7 @@ const Register = () => {
         <div className="row">
             <div className="col-sm-12 offset-md-1 col-md-10 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
                 <h2 className="heading-margin text-center">Register</h2>
+                <p className="error-register-message">{error}</p>
                 <form onSubmit={onRegisterHandler} method="POST">
                     <div className="form-group">
                         <label htmlFor="email">Email address</label>
@@ -64,6 +70,6 @@ const Register = () => {
             </div>
         </div>
     );
-}
+};
 
 export default Register;

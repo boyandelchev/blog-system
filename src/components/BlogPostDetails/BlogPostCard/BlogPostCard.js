@@ -27,6 +27,6 @@ const BlogPostCard = ({
             </div>
         </div>
     );
-}
+};
 
 export default BlogPostCard;

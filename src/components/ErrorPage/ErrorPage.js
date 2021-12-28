@@ -9,6 +9,6 @@ const ErrorPage = ({
             {children && <p className="no-content">{children}</p>}
         </section>
     );
-}
+};
 
 export default ErrorPage;

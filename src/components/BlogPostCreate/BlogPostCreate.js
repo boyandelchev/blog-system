@@ -76,6 +76,6 @@ const BlogPostCreate = () => {
             </div>
         </div>
     );
-}
+};
 
 export default BlogPostCreate;

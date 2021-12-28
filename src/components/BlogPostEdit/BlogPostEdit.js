@@ -91,6 +91,6 @@ const BlogPostEdit = () => {
             </div>
         </div>
     );
-}
+};
 
 export default BlogPostEdit;

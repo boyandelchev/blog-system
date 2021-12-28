@@ -28,6 +28,6 @@ const MyBlogPost = ({
             </div>
         </div>
     );
-}
+};
 
 export default MyBlogPost;

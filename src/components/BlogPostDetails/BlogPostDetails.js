@@ -83,6 +83,6 @@ const BlogPostDetails = () => {
             </div>
         </>
     );
-}
+};
 
 export default BlogPostDetails;

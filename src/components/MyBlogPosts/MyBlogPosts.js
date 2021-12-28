@@ -47,6 +47,6 @@ const MyBlogPosts = () => {
             </div>
         </>
     );
-}
+};
 
 export default MyBlogPosts;
