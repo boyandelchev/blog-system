@@ -1,9 +1,11 @@
+import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 
-const Header = ({
-    isAuthenticated,
-    user,
-}) => {
+import { AuthContext } from '../../contexts/AuthContext';
+
+const Header = () => {
+    const { user } = useContext(AuthContext);
+
     let guestNavigation = (
         <>
             <li className="nav-item">
@@ -38,7 +40,7 @@ const Header = ({
                 <div className="container">
 
                     <NavLink className="navbar-brand float-left" to="/">
-                        <img src="img/logo.png" alt="logo" />
+                        <img src="/img/logo.png" alt="logo" />
                     </NavLink>
 
                     <form className="form-inline my-2 my-lg-0 float-left">
@@ -52,7 +54,7 @@ const Header = ({
                             <li className="nav-item">
                                 <NavLink className={({ isActive }) => "nav-link" + (isActive ? " btn btn-outline-secondary" : "")} to="/">All Posts<span className="sr-only">(current)</span></NavLink>
                             </li>
-                            {isAuthenticated
+                            {user.email
                                 ? userNavigation
                                 : guestNavigation
                             }

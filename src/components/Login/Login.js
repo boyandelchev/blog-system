@@ -1,10 +1,11 @@
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { AuthContext } from '../../contexts/AuthContext';
 import * as authService from '../../services/authService';
 
-const Login = ({
-    onLogin
-}) => {
+const Login = () => {
+    const { login } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const onLoginHandler = (e) => {
@@ -13,12 +14,29 @@ const Login = ({
         let formData = new FormData(e.currentTarget);
 
         let email = formData.get('email');
+        let password = formData.get('password');
 
-        authService.login(email);
+        try {
+            if (email == '') {
+                throw new Error('Please fill in your email address.');
+            }
 
-        onLogin(email);
+            if (password.length < 6) {
+                throw new Error('Password must be at least 6 characters long.');
+            }
 
-        navigate('/');
+            authService.login(email, password)
+                .then(authData => {
+                    login(authData);
+
+                    navigate('/');
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        } catch (err) {
+            console.log(err.message);
+        }
     };
 
     return (
