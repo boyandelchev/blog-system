@@ -8,7 +8,6 @@ const useNotification = (message, milliseconds) => {
         setTimeout(() => {
             setNotification('');
         }, milliseconds);
-
     };
 
     return [notification, clearNotification];

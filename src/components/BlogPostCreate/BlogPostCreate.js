@@ -1,19 +1,25 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { AuthContext } from '../../contexts/AuthContext';
 import * as blogPostService from '../../services/blogPostService';
 
+import './BlogPostCreate.css';
+
 const BlogPostCreate = () => {
+    const { user } = useContext(AuthContext);
     const [categories, setCategories] = useState([]);
     const navigate = useNavigate();
+    const [error, setError] = useState('');
 
     useEffect(() => {
         blogPostService.getAllCategories()
             .then(result => {
                 setCategories(result);
             })
-            .catch(result => {
-                setCategories([]);
+            .catch(err => {
+                console.log(err.message);
+                setError(err.message);
             });
     }, []);
 
@@ -31,24 +37,44 @@ const BlogPostCreate = () => {
         let content = formData.get('blog-post-create-content');
         let imageUrl = formData.get('blog-post-create-image-url');
         let categories = formData.getAll('blog-post-create-categories');
-        let createdOn = Date().substring(0, 24);
 
-        blogPostService.create({
-            title,
-            content,
-            imageUrl,
-            categories,
-            createdOn,
-        })
-            .then(result => {
-                navigate('/');
-            });
+        try {
+            if (title.length < 2 || title.length > 100) {
+                throw new Error('Title must be between 2 and 100 characters long.');
+            }
+
+            if (content.length < 10 || content.length > 5000) {
+                throw new Error('Content must be between 10 and 5000 characters long. Please create part 2 if longer.');
+            }
+
+            if (imageUrl == '') {
+                throw new Error('Please provide a proper URL.');
+            }
+
+            blogPostService.create({
+                title,
+                content,
+                imageUrl,
+                categories,
+            }, user.accessToken)
+                .then(() => {
+                    navigate('/');
+                })
+                .catch(err => {
+                    console.log(err.message);
+                    setError(err.message);
+                });
+        } catch (err) {
+            console.log(err.message);
+            setError(err.message);
+        }
     };
 
     return (
         <div className="row">
             <div className="col-sm-12 offset-md-1 col-md-10 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
                 <h2 className="heading-margin text-center">Create a Post</h2>
+                <p className="error-blog-post-create-message">{error}</p>
                 <form onSubmit={onBlogPostCreate} method="POST">
                     <div className="form-group">
                         <label htmlFor="blog-post-create-title">Title</label>

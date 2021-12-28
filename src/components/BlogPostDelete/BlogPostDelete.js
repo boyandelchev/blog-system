@@ -1,26 +1,36 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
+import { AuthContext } from '../../contexts/AuthContext';
 import * as blogPostService from '../../services/blogPostService';
 
+import './BlogPostDelete.css';
+
 const BlogPostDelete = () => {
-    const [blogPost, setBlogPost] = useState({});
+    const { user } = useContext(AuthContext);
     const [categories, setCategories] = useState([]);
+    const [blogPost, setBlogPost] = useState({});
     const { blogPostId } = useParams();
     const navigate = useNavigate();
+    const [error, setError] = useState('');
 
     useEffect(() => {
-        blogPostService.getOne(blogPostId)
-            .then(result => {
-                setBlogPost(result);
-            });
-
         blogPostService.getAllCategories()
             .then(result => {
                 setCategories(result);
             })
-            .catch(result => {
-                setCategories([]);
+            .catch(err => {
+                console.log(err.message);
+                setError(err.message);
+            });
+
+        blogPostService.getOne(blogPostId)
+            .then(result => {
+                setBlogPost(result);
+            })
+            .catch(err => {
+                console.log(err.message);
+                setError(err.message);
             });
     }, []);
 
@@ -33,9 +43,13 @@ const BlogPostDelete = () => {
     const onBlogPostDelete = (e) => {
         e.preventDefault();
 
-        blogPostService.deleteBlogPost(blogPostId)
-            .then(result => {
+        blogPostService.deleteBlogPost(blogPostId, user.accessToken)
+            .then(() => {
                 navigate('/');
+            })
+            .catch(err => {
+                console.log(err.message);
+                setError(err.message);
             });
     };
 
@@ -43,6 +57,7 @@ const BlogPostDelete = () => {
         <div className="row">
             <div className="col-sm-12 offset-md-1 col-md-10 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
                 <h2 className="heading-margin text-center">Delete this Post</h2>
+                <p className="error-blog-post-delete-message">{error}</p>
                 <form>
                     <div className="form-group">
                         <label htmlFor="blog-post-create-title">Title</label>

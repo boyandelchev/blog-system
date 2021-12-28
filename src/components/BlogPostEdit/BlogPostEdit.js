@@ -1,26 +1,36 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
+import { AuthContext } from '../../contexts/AuthContext';
 import * as blogPostService from '../../services/blogPostService';
 
+import './BlogPostEdit.css';
+
 const BlogPostEdit = () => {
-    const [blogPost, setBlogPost] = useState({});
+    const { user } = useContext(AuthContext);
     const [categories, setCategories] = useState([]);
+    const [blogPost, setBlogPost] = useState({});
     const { blogPostId } = useParams();
     const navigate = useNavigate();
+    const [error, setError] = useState('');
 
     useEffect(() => {
-        blogPostService.getOne(blogPostId)
-            .then(result => {
-                setBlogPost(result);
-            });
-
         blogPostService.getAllCategories()
             .then(result => {
                 setCategories(result);
             })
-            .catch(result => {
-                setCategories([]);
+            .catch(err => {
+                console.log(err.message);
+                setError(err.message);
+            });
+
+        blogPostService.getOne(blogPostId)
+            .then(result => {
+                setBlogPost(result);
+            })
+            .catch(err => {
+                console.log(err.message);
+                setError(err.message);
             });
     }, []);
 
@@ -39,25 +49,45 @@ const BlogPostEdit = () => {
         let content = formData.get('blog-post-create-content');
         let imageUrl = formData.get('blog-post-create-image-url');
         let categories = formData.getAll('blog-post-create-categories');
-        let createdOn = Date().substring(0, 24);
 
-        blogPostService.edit({
-            _id,
-            title,
-            content,
-            imageUrl,
-            categories,
-            createdOn,
-        })
-            .then(result => {
-                navigate(`/blog-post-details/${blogPostId}`);
-            });
+        try {
+            if (title.length < 2 || title.length > 100) {
+                throw new Error('Title must be between 2 and 100 characters long.');
+            }
+
+            if (content.length < 10 || content.length > 5000) {
+                throw new Error('Content must be between 10 and 5000 characters long. Please create part 2 if longer.');
+            }
+
+            if (imageUrl == '') {
+                throw new Error('Please provide a proper URL.');
+            }
+
+            blogPostService.edit({
+                _id,
+                title,
+                content,
+                imageUrl,
+                categories,
+            }, user.accessToken)
+                .then(() => {
+                    navigate(`/blog-post-details/${blogPostId}`);
+                })
+                .catch(err => {
+                    console.log(err.message);
+                    setError(err.message);
+                });
+        } catch (err) {
+            console.log(err.message);
+            setError(err.message);
+        }
     };
 
     return (
         <div className="row">
             <div className="col-sm-12 offset-md-1 col-md-10 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
                 <h2 className="heading-margin text-center">Edit this Post</h2>
+                <p className="error-blog-post-edit-message">{error}</p>
                 <form onSubmit={onBlogPostEdit} method="POST">
                     <div className="form-group">
                         <label htmlFor="blog-post-create-title">Title</label>
