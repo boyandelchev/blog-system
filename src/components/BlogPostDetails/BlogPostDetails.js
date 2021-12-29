@@ -32,7 +32,7 @@ const BlogPostDetails = () => {
                 navigate('/error');
             });
 
-        blogPostService.getAll()
+        blogPostService.getLastThree()
             .then(result => {
                 setBlogPosts(result);
             })

@@ -12,6 +12,42 @@ export const getAll = async () => {
     }
 };
 
+export const getAllDescending = async () => {
+    let res = await fetch(`${baseUrl}/blogposts?sortBy=_createdOn%20desc`);
+
+    let jsonData = await res.json();
+
+    if (res.ok) {
+        return jsonData;
+    } else {
+        throw jsonData;
+    }
+};
+
+export const getAllMine = async (userId) => {
+    let res = await fetch(`${baseUrl}/blogposts/?where=_ownerId%3D%22${userId}%22`);
+
+    let jsonData = await res.json();
+
+    if (res.ok) {
+        return jsonData;
+    } else {
+        throw jsonData;
+    }
+};
+
+export const getLastThree = async () => {
+    let res = await fetch(`${baseUrl}/blogposts?select=_id%2Ctitle%2CimageUrl%2C_createdOn%2CauthorName&sortBy=_createdOn%20desc&offset=0&pageSize=3`);
+
+    let jsonData = await res.json();
+
+    if (res.ok) {
+        return jsonData;
+    } else {
+        throw jsonData;
+    }
+};
+
 export const getOne = (blogPostId) => {
     return fetch(`${baseUrl}/blogposts/${blogPostId}`)
         .then(res => res.json());

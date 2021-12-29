@@ -9,6 +9,7 @@ import BlogPost from './BlogPost';
 
 const Home = () => {
     const [blogPosts, setBlogPosts] = useState([]);
+    const [blogPostsDesc, setBlogPostsDesc] = useState([]);
 
     const { state } = useLocation();
     const [notification, clearNotification] = useNotification(state?.message, state?.timeOut);
@@ -17,6 +18,14 @@ const Home = () => {
         blogPostService.getAll()
             .then(result => {
                 setBlogPosts(result);
+            })
+            .catch(err => {
+                console.log(err.message);
+            });
+
+        blogPostService.getAllDescending()
+            .then(result => {
+                setBlogPostsDesc(result);
             })
             .catch(err => {
                 console.log(err.message);
@@ -54,8 +63,8 @@ const Home = () => {
                     <h2><span>All Recent Posts</span></h2>
                 </div>
                 <div className="card-columns listrecent">
-                    {blogPosts.length > 0
-                        ? blogPosts.map(x => <BlogPost key={x._id} blogPost={x} />)
+                    {blogPostsDesc.length > 0
+                        ? blogPostsDesc.map(x => <BlogPost key={x._id} blogPost={x} />)
                         : <p>No Blog Posts</p>
                     }
                 </div>

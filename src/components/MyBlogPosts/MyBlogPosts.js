@@ -10,7 +10,7 @@ const MyBlogPosts = () => {
     const [blogPosts, setBlogPosts] = useState([]);
 
     useEffect(() => {
-        blogPostService.getAll()
+        blogPostService.getAllMine(user._id)
             .then(result => {
                 setBlogPosts(result);
             })
@@ -49,7 +49,10 @@ const MyBlogPosts = () => {
             <div className="graybg authorpage">
                 <div className="container">
                     <div className="listrecent listrelated">
-                        {blogPosts.map(x => <MyBlogPost key={x._id} blogPost={x} />)}
+                        {blogPosts.length > 0
+                            ? blogPosts.map(x => <MyBlogPost key={x._id} blogPost={x} />)
+                            : <p>You do not have any blog posts yet.</p>
+                        }
                     </div>
                 </div>
             </div>

@@ -1,3 +1,23 @@
+# Blog System
+
+This project is a simple Blog System and it is created with the React library and a custom practice server.
+React Router v6 and a custom CSS template with Bootstrap 4 were also used.
+
+## Link to the custom server
+https://github.com/softuni-practice-server/softuni-practice-server
+
+### Structure of the project
+The project focus is on the implementation of authorized CRUD requests centered around blog posts.
+
+Context API and Local Storage is used for the implementation of the authentication and its persistence.
+This project relies on the collection of categories populated beforehand using the custom practice server and Postman.
+
+Authenticated users can create blog posts and comment on any blog posts.
+Only owners can edit and delete their own blog posts.
+Each owner has a separate personal blog posts page.
+The rest should be accessible without registration.
+Implemented simple notifications.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
