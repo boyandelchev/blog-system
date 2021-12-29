@@ -62,3 +62,27 @@ export const getAllCategories = async () => {
         throw jsonData;
     }
 };
+
+export const getAllComments = async (blogPostId) => {
+    let res = await fetch(`${baseUrl}/comments/?where=blogPostId%3D%22${blogPostId}%22`);
+
+    let jsonData = await res.json();
+
+    if (res.ok) {
+        return jsonData;
+    } else {
+        throw jsonData;
+    }
+};
+
+export const createComment = (commentData, token) => {
+    return fetch(`${baseUrl}/comments`, {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json',
+            'X-Authorization': token,
+        },
+        body: JSON.stringify(commentData)
+    })
+        .then(res => res.json());
+};

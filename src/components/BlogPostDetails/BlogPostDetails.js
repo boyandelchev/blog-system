@@ -5,16 +5,22 @@ import { AuthContext } from '../../contexts/AuthContext';
 import useNotification from '../../hooks/useNotification';
 import * as blogPostService from '../../services/blogPostService';
 
+import BlogPostDetailsCommentForm from './BlogPostDetailsCommentForm';
+import BlogPostDetailsComment from './BlogPostDetailsComment';
 import BlogPostCard from './BlogPostCard';
+
+import './BlogPostDetails.css';
 
 const BlogPostDetails = () => {
     const { user } = useContext(AuthContext);
     const [blogPost, setBlogPost] = useState({});
     const [blogPosts, setBlogPosts] = useState([]);
+    const [comments, setComments] = useState([]);
     const { blogPostId } = useParams();
     const navigate = useNavigate();
+    const [error, setError] = useState('');
 
-    const { state } = useLocation();
+    const { key, state } = useLocation();
     const [notification, clearNotification] = useNotification(state?.message, state?.timeOut);
 
     useEffect(() => {
@@ -36,14 +42,22 @@ const BlogPostDetails = () => {
     }, [blogPostId]);
 
     useEffect(() => {
+        blogPostService.getAllComments(blogPostId)
+            .then(result => {
+                setComments(result);
+            })
+            .catch(err => {
+                console.log(err.message);
+                setError(err.message);
+            });
+    }, [blogPostId, key]);
+
+    useEffect(() => {
         clearNotification();
     }, []);
 
-    const userButtons = <button type="button" className="btn btn-light m-2"><a href="#">Comment</a></button>;
-
     const ownerButtons = (
         <>
-            {userButtons}
             <button type="button" className="btn btn-warning m-2"><Link to={`/blog-post-edit/${blogPost._id}`}>Edit</Link></button>
             <button type="button" className="btn btn-danger m-2"><Link to={`/blog-post-delete/${blogPost._id}`}>Delete</Link></button>
         </>
@@ -53,7 +67,38 @@ const BlogPostDetails = () => {
         return new Date(dateInMilliseconds)
             .toString()
             .substring(0, 24);
-    }
+    };
+
+    const onBlogPostDetailsCommentForm = (e) => {
+        e.preventDefault();
+
+        let formData = new FormData(e.currentTarget);
+        let { commentContent } = Object.fromEntries(formData);
+        let content = commentContent;
+        let authorName = user.email;
+
+        try {
+            if (content.length < 2 || content.length > 500) {
+                throw new Error('Comment must be between 2 and 500 characters long.');
+            }
+
+            blogPostService.createComment({
+                content,
+                authorName,
+                blogPostId,
+            }, user.accessToken)
+                .then(() => {
+                    navigate(`/blog-post-details/${blogPostId}`);
+                })
+                .catch(err => {
+                    console.log(err.message);
+                    setError(err.message);
+                });
+        } catch (err) {
+            console.log(err.message);
+            setError(err.message);
+        }
+    };
 
     return (
         <>
@@ -99,8 +144,19 @@ const BlogPostDetails = () => {
 
                         {user._id && (user._id == blogPost._ownerId
                             ? ownerButtons
-                            : userButtons
+                            : ''
                         )}
+
+                        <p className="error-blog-post-details-comment-message">{error}</p>
+                        {user._id
+                            ? <BlogPostDetailsCommentForm onBlogPostDetailsCommentForm={onBlogPostDetailsCommentForm} />
+                            : ''
+                        }
+
+                        {comments.length > 0
+                            ? comments.map(x => <BlogPostDetailsComment key={x._id} comment={x} />)
+                            : ''
+                        }
 
                     </div>
 
