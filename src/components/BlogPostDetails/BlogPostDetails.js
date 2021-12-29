@@ -1,7 +1,8 @@
 import { useState, useEffect, useContext } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 
 import { AuthContext } from '../../contexts/AuthContext';
+import useNotification from '../../hooks/useNotification';
 import * as blogPostService from '../../services/blogPostService';
 
 import BlogPostCard from './BlogPostCard';
@@ -12,6 +13,9 @@ const BlogPostDetails = () => {
     const [blogPosts, setBlogPosts] = useState([]);
     const { blogPostId } = useParams();
     const navigate = useNavigate();
+
+    const { state } = useLocation();
+    const [notification, clearNotification] = useNotification(state?.message, state?.timeOut);
 
     useEffect(() => {
         blogPostService.getOne(blogPostId)
@@ -30,6 +34,10 @@ const BlogPostDetails = () => {
                 console.log(err.message);
             });
     }, [blogPostId]);
+
+    useEffect(() => {
+        clearNotification();
+    }, []);
 
     const userButtons = <button type="button" className="btn btn-light m-2"><a href="#">Comment</a></button>;
 
@@ -51,18 +59,18 @@ const BlogPostDetails = () => {
         <>
             <div className="container">
                 <div className="row">
-
+                    {notification}
                     <div className="col-md-10 col-md-offset-2 col-xs-12">
                         <div className="mainheading">
 
                             <div className="row post-top-meta">
                                 <div className="col-md-2">
-                                    <a href="author.html"><img className="author-thumb" src="https://www.gravatar.com/avatar/e56154546cf4be74e393c62d1ae9f9d4?s=250&amp;d=mm&amp;r=x" alt="Sal" /></a>
+                                    <a href="#"><img className="author-thumb" src="https://www.gravatar.com/avatar/e56154546cf4be74e393c62d1ae9f9d4?s=250&amp;d=mm&amp;r=x" alt="Sal" /></a>
                                 </div>
                                 <div className="col-md-10">
-                                    <a className="link-dark" href="author.html">Sal</a>
-                                    <span className="author-description">Founder of WowThemes.net and creator of <b>"Mediumish"</b> theme that you're currently previewing. Developing professional premium themes, templates, plugins, scripts since 2012.</span>
-                                    <p className="createdOn-date">{date(blogPost._createdOn)}</p>
+                                    <a className="link-dark" href="#">Author: {blogPost.authorName}</a>
+                                    <span className="author-description"></span>
+                                    <p className="createdOn-date">Posted on: {date(blogPost._createdOn)}</p>
                                     {blogPost._updatedOn
                                         ? <p className="updatedOn-date">Updated on: {date(blogPost._updatedOn)}</p>
                                         : ''

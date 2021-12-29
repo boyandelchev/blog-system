@@ -13,6 +13,7 @@ const BlogPostEdit = () => {
     const { blogPostId } = useParams();
     const navigate = useNavigate();
     const [error, setError] = useState('');
+    const [notification, setNotification] = useState({ message: 'You have successfully edited this blog post.', timeOut: 3000 });
 
     useEffect(() => {
         blogPostService.getAllCategories()
@@ -38,6 +39,12 @@ const BlogPostEdit = () => {
     if (categories.length > 0) {
         [categoriesData] = categories;
         categoriesData = categoriesData.categories;
+    }
+
+    let authorName = user.email;
+    let index = authorName.indexOf('@');
+    if (index) {
+        authorName = authorName.substring(0, index);
     }
 
     const onBlogPostEdit = (e) => {
@@ -69,9 +76,10 @@ const BlogPostEdit = () => {
                 content,
                 imageUrl,
                 categories,
+                authorName,
             }, user.accessToken)
                 .then(() => {
-                    navigate(`/blog-post-details/${blogPostId}`);
+                    navigate(`/blog-post-details/${blogPostId}`, { state: notification });
                 })
                 .catch(err => {
                     console.log(err.message);

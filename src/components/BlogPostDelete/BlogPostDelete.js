@@ -13,6 +13,7 @@ const BlogPostDelete = () => {
     const { blogPostId } = useParams();
     const navigate = useNavigate();
     const [error, setError] = useState('');
+    const [notification, setNotification] = useState({ message: 'You have successfully deleted a blog post.', timeOut: 3000 });
 
     useEffect(() => {
         blogPostService.getAllCategories()
@@ -45,7 +46,7 @@ const BlogPostDelete = () => {
 
         blogPostService.deleteBlogPost(blogPostId, user.accessToken)
             .then(() => {
-                navigate('/');
+                navigate('/', { state: notification });
             })
             .catch(err => {
                 console.log(err.message);
