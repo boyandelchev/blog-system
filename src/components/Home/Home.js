@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import useNotification from '../../hooks/useNotification';
 import * as blogPostService from '../../services/blogPostService';
+import useNotification from '../../hooks/useNotification';
 
 import FeaturedBlogPost from './FeaturedBlogPost';
 import BlogPost from './BlogPost';

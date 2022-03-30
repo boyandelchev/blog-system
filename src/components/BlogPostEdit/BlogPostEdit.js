@@ -1,17 +1,17 @@
 import { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import { AuthContext } from '../../contexts/AuthContext';
 import * as blogPostService from '../../services/blogPostService';
+import { AuthContext } from '../../contexts/AuthContext';
 
 import './BlogPostEdit.css';
 
 const BlogPostEdit = () => {
+    const navigate = useNavigate();
+    const { blogPostId } = useParams();
     const { user } = useContext(AuthContext);
     const [categories, setCategories] = useState([]);
     const [blogPost, setBlogPost] = useState({});
-    const { blogPostId } = useParams();
-    const navigate = useNavigate();
     const [error, setError] = useState('');
     const [notification, setNotification] = useState({ message: 'You have successfully edited this blog post.', timeOut: 3000 });
 
@@ -33,7 +33,7 @@ const BlogPostEdit = () => {
                 console.log(err.message);
                 setError(err.message);
             });
-    }, []);
+    }, [blogPostId]);
 
     let categoriesData;
     if (categories.length > 0) {
@@ -66,7 +66,7 @@ const BlogPostEdit = () => {
                 throw new Error('Content must be between 10 and 5000 characters long. Please create part 2 if longer.');
             }
 
-            if (imageUrl == '') {
+            if (imageUrl === '') {
                 throw new Error('Please provide a proper URL.');
             }
 

@@ -1,17 +1,17 @@
 import { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import { AuthContext } from '../../contexts/AuthContext';
 import * as blogPostService from '../../services/blogPostService';
+import { AuthContext } from '../../contexts/AuthContext';
 
 import './BlogPostDelete.css';
 
 const BlogPostDelete = () => {
+    const navigate = useNavigate();
+    const { blogPostId } = useParams();
     const { user } = useContext(AuthContext);
     const [categories, setCategories] = useState([]);
     const [blogPost, setBlogPost] = useState({});
-    const { blogPostId } = useParams();
-    const navigate = useNavigate();
     const [error, setError] = useState('');
     const [notification, setNotification] = useState({ message: 'You have successfully deleted a blog post.', timeOut: 3000 });
 
@@ -33,7 +33,7 @@ const BlogPostDelete = () => {
                 console.log(err.message);
                 setError(err.message);
             });
-    }, []);
+    }, [blogPostId]);
 
     let categoriesData;
     if (categories.length > 0) {

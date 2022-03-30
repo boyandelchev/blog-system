@@ -1,7 +1,7 @@
 # Blog System
 
-This project is a simple Blog System and it is created with the React library and a custom practice server.
-React Router v6 and a custom CSS template with Bootstrap 4 were also used.
+This project is a simple Blog System, and it is created with the React library and a custom practice server.
+React Router v6, custom CSS template, Bootstrap 5 and React-Bootstrap are also used.
 
 ## Link to the custom server
 https://github.com/softuni-practice-server/softuni-practice-server

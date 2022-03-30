@@ -11,7 +11,7 @@ export const register = async (email, password) => {
 
     let jsonResult = await res.json();
 
-    if (res.status == 409) {
+    if (res.status === 409) {
         throw jsonResult.message;
     }
 
@@ -29,7 +29,7 @@ export const login = async (email, password) => {
 
     let jsonResult = await res.json();
 
-    if (res.status == 403) {
+    if (res.status === 403) {
         throw jsonResult.message;
     }
 

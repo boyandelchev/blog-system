@@ -5,7 +5,7 @@ const Footer = () => {
                 Copyright &copy; {new Date().getFullYear()} Blog System
             </p>
             <p>
-                Mediumish Theme by <a target="_blank" href="https://www.wowthemes.net">WowThemes.net</a>
+                Mediumish Theme
             </p>
             <div className="clearfix">
             </div>

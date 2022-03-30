@@ -1,14 +1,14 @@
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { AuthContext } from '../../contexts/AuthContext';
 import * as authService from '../../services/authService';
+import { AuthContext } from '../../contexts/AuthContext';
 
 import './Register.css';
 
 const Register = () => {
-    const { login } = useContext(AuthContext);
     const navigate = useNavigate();
+    const { login } = useContext(AuthContext);
     const [error, setError] = useState('');
 
     const onRegisterHandler = (e) => {
@@ -19,7 +19,7 @@ const Register = () => {
         let repeatPass = formData.get('repeat-password');
 
         try {
-            if (email == '') {
+            if (email === '') {
                 throw new Error('Please fill in your email address.');
             }
 
@@ -27,7 +27,7 @@ const Register = () => {
                 throw new Error('Password must be at least 6 characters long.');
             }
 
-            if (password != repeatPass) {
+            if (password !== repeatPass) {
                 throw new Error('Passwords do not match.');
             }
 

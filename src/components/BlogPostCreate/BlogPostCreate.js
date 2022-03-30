@@ -1,15 +1,15 @@
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { AuthContext } from '../../contexts/AuthContext';
 import * as blogPostService from '../../services/blogPostService';
+import { AuthContext } from '../../contexts/AuthContext';
 
 import './BlogPostCreate.css';
 
 const BlogPostCreate = () => {
+    const navigate = useNavigate();
     const { user } = useContext(AuthContext);
     const [categories, setCategories] = useState([]);
-    const navigate = useNavigate();
     const [error, setError] = useState('');
     const [notification, setNotification] = useState({ message: 'You have successfully created a blog post.', timeOut: 3000 });
 
@@ -54,7 +54,7 @@ const BlogPostCreate = () => {
                 throw new Error('Content must be between 10 and 5000 characters long. Please create part 2 if longer.');
             }
 
-            if (imageUrl == '') {
+            if (imageUrl === '') {
                 throw new Error('Please provide a proper URL.');
             }
 

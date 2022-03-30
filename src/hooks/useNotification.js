@@ -1,4 +1,5 @@
 import { useState } from 'react';
+
 import './useNotification.css';
 
 const useNotification = (message, milliseconds) => {

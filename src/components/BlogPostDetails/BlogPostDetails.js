@@ -1,9 +1,9 @@
 import { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 
+import * as blogPostService from '../../services/blogPostService';
 import { AuthContext } from '../../contexts/AuthContext';
 import useNotification from '../../hooks/useNotification';
-import * as blogPostService from '../../services/blogPostService';
 
 import BlogPostDetailsCommentForm from './BlogPostDetailsCommentForm';
 import BlogPostDetailsComment from './BlogPostDetailsComment';
@@ -12,12 +12,12 @@ import BlogPostCard from './BlogPostCard';
 import './BlogPostDetails.css';
 
 const BlogPostDetails = () => {
+    const navigate = useNavigate();
+    const { blogPostId } = useParams();
     const { user } = useContext(AuthContext);
     const [blogPost, setBlogPost] = useState({});
     const [blogPosts, setBlogPosts] = useState([]);
     const [comments, setComments] = useState([]);
-    const { blogPostId } = useParams();
-    const navigate = useNavigate();
     const [error, setError] = useState('');
 
     const { key, state } = useLocation();
@@ -142,7 +142,7 @@ const BlogPostDetails = () => {
                             </ul>
                         </div>
 
-                        {user._id && (user._id == blogPost._ownerId
+                        {user._id && (user._id === blogPost._ownerId
                             ? ownerButtons
                             : ''
                         )}

@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 
-import { AuthContext } from '../../contexts/AuthContext';
 import * as blogPostService from '../../services/blogPostService';
+import { AuthContext } from '../../contexts/AuthContext';
 
 import MyBlogPost from './MyBlogPost';
 
@@ -17,7 +17,7 @@ const MyBlogPosts = () => {
             .catch(err => {
                 console.log(err.message);
             });
-    }, []);
+    }, [user._id]);
 
     let authorName = user.email;
     let index = authorName.indexOf('@');

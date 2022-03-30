@@ -15,6 +15,8 @@ import BlogPostDelete from './components/BlogPostDelete';
 import BlogPostDetails from './components/BlogPostDetails';
 import Footer from './components/Footer';
 import ErrorPage from './components/ErrorPage';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 const initialAuthState = {
     _id: '',

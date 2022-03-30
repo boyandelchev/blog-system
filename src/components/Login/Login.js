@@ -1,15 +1,15 @@
 import { useContext, useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+import * as authService from '../../services/authService';
 import { AuthContext } from '../../contexts/AuthContext';
 import useNotification from '../../hooks/useNotification';
-import * as authService from '../../services/authService';
 
 import './Login.css';
 
 const Login = () => {
-    const { login } = useContext(AuthContext);
     const navigate = useNavigate();
+    const { login } = useContext(AuthContext);
     const [error, setError] = useState('');
 
     const { state } = useLocation();
@@ -28,7 +28,7 @@ const Login = () => {
         let password = formData.get('password');
 
         try {
-            if (email == '') {
+            if (email === '') {
                 throw new Error('Please fill in your email address.');
             }
 
