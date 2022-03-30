@@ -6,11 +6,11 @@ const BlogPostDetailsComment = ({
         .substring(0, 24);
 
     return (
-        <div className="media">
-            <div className="media-body">
-                <img className="mr-3" src="/img/profile-image-32x32.png" alt="profile" />
+        <div className="d-flex">
+            <div className="flex-grow-1">
+                <img className="me-3" src="/img/profile-image-32x32.png" alt="profile" />
                 <span className="mt-0 font-weight-bold">{comment.authorName}</span>
-                <span className="float-right text-secondary font-italic">{date}</span>
+                <span className="float-end text-secondary font-italic">{date}</span>
                 <p>{comment.content}</p>
             </div>
         </div>

@@ -53,16 +53,16 @@ const Register = () => {
                 <h2 className="heading-margin text-center">Register</h2>
                 <p className="error-register-message">{error}</p>
                 <form onSubmit={registerHandler} method="POST">
-                    <div className="form-group">
-                        <label htmlFor="email">Email address</label>
+                    <div className="mb-3">
+                        <label htmlFor="email" className="form-label">Email address</label>
                         <input type="email" name="email" className="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" />
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="password">Password</label>
+                    <div className="mb-3">
+                        <label htmlFor="password" className="form-label">Password</label>
                         <input type="password" name="password" className="form-control" id="password" placeholder="Password" />
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="repeat-password">Repeat Password</label>
+                    <div className="mb-3">
+                        <label htmlFor="repeat-password" className="form-label">Repeat Password</label>
                         <input type="password" name="repeat-password" className="form-control" id="repeat-password" placeholder="Repeat Password" />
                     </div>
                     <button type="submit" className="btn btn-primary">Register</button>

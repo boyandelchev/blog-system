@@ -6,7 +6,7 @@ const BlogPostDetailsCommentForm = ({
             <section className="mt-3">
                 <form onSubmit={onBlogPostDetailsCommentForm} method="POST">
                     <div className="form-group">
-                        <label htmlFor="commentContent">Let me know your views. Comment down below.</label>
+                        <label htmlFor="commentContent" className="form-label">Let me know your views. Comment down below.</label>
                         <textarea name="commentContent" id="commentContent" rows="5" className="form-control" placeholder="Add a comment"></textarea>
                     </div>
 

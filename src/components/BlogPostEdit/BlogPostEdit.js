@@ -97,20 +97,20 @@ const BlogPostEdit = () => {
                 <h2 className="heading-margin text-center">Edit this Post</h2>
                 <p className="error-blog-post-edit-message">{error}</p>
                 <form onSubmit={blogPostEditHandler} method="POST">
-                    <div className="form-group">
-                        <label htmlFor="blog-post-create-title">Title</label>
+                    <div className="mb-3">
+                        <label htmlFor="blog-post-create-title" className="form-label">Title</label>
                         <input type="text" name="blog-post-create-title" className="form-control" id="blog-post-create-title" defaultValue={blogPost.title} placeholder="title" />
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="blog-post-create-content">Content</label>
+                    <div className="mb-3">
+                        <label htmlFor="blog-post-create-content" className="form-label">Content</label>
                         <textarea name="blog-post-create-content" className="form-control" id="blog-post-create-content" rows="10" defaultValue={blogPost.content} placeholder="content"></textarea>
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="blog-post-create-image-url">Image URL</label>
+                    <div className="mb-3">
+                        <label htmlFor="blog-post-create-image-url" className="form-label">Image URL</label>
                         <input type="text" name="blog-post-create-image-url" className="form-control" id="blog-post-create-image-url" defaultValue={blogPost.imageUrl} placeholder="image URL" />
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="blog-post-create-categories">Select categories</label>
+                    <div className="mb-3">
+                        <label htmlFor="blog-post-create-categories" className="form-label">Select categories</label>
                         <select multiple className="form-control" id="blog-post-create-categories" name="blog-post-create-categories">
                             {(categories.length > 0 && blogPost.categories)
                                 ? categoriesData.map(x => {

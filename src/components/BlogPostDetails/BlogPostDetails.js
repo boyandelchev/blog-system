@@ -57,8 +57,8 @@ const BlogPostDetails = () => {
 
     const ownerButtons = (
         <>
-            <button type="button" className="btn btn-warning m-2"><Link to={`/blog-post-edit/${blogPost._id}`}>Edit</Link></button>
-            <button type="button" className="btn btn-danger m-2"><Link to={`/blog-post-delete/${blogPost._id}`}>Delete</Link></button>
+            <Link to={`/blog-post-edit/${blogPost._id}`}><button type="button" className="btn btn-warning m-2">Edit</button></Link>
+            <Link to={`/blog-post-delete/${blogPost._id}`}><button type="button" className="btn btn-danger m-2">Delete</button></Link>
         </>
     );
 
@@ -135,7 +135,7 @@ const BlogPostDetails = () => {
                         <div className="after-post-tags">
                             <ul className="tags">
                                 {blogPost.categories
-                                    ? blogPost.categories.map(x => <li key={x}><a href="#">{x}</a></li>)
+                                    ? blogPost.categories.map(x => <li key={x}><a className="text-decoration-none" href="#">{x}</a></li>)
                                     : ''
                                 }
                             </ul>

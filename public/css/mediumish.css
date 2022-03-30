@@ -94,10 +94,10 @@ section {
 }
 .listfeaturedtag .wrapfooter {
 	position:absolute;
-	bottom:20px;
+	bottom:5px;
 	font-size:12px;
 	display:block;
-	width:85%;
+	width:50%;
 }
 .listrecent .wrapfooter {
 	font-size:12px;

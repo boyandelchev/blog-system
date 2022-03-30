@@ -59,12 +59,12 @@ const Login = () => {
                 <h2 className="heading-margin text-center">Login</h2>
                 <p className="error-login-message">{error}</p>
                 <form onSubmit={loginHandler} method="POST">
-                    <div className="form-group">
-                        <label htmlFor="email">Email address</label>
+                    <div className="mb-3">
+                        <label htmlFor="email" className="form-label">Email address</label>
                         <input type="email" name="email" className="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" />
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="password">Password</label>
+                    <div className="mb-3">
+                        <label htmlFor="password" className="form-label">Password</label>
                         <input type="password" name="password" className="form-control" id="password" placeholder="Password" />
                     </div>
                     <button type="submit" className="btn btn-primary">Login</button>

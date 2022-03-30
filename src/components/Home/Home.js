@@ -50,7 +50,7 @@ const Home = () => {
                 <div className="section-title">
                     <h2><span>Featured</span></h2>
                 </div>
-                <div className="card-columns listfeaturedtag">
+                <div className="row row-cols-1 row-cols-md-2 g-4 listfeaturedtag">
                     {blogPosts.length > 0
                         ? blogPosts.map(x => <FeaturedBlogPost key={x._id} blogPost={x} />)
                         : <p>No Featured Blog Posts</p>
@@ -62,7 +62,7 @@ const Home = () => {
                 <div className="section-title">
                     <h2><span>All Recent Posts</span></h2>
                 </div>
-                <div className="card-columns listrecent">
+                <div className="row row-cols-1 row-cols-md-3 g-4 listrecent">
                     {blogPostsDesc.length > 0
                         ? blogPostsDesc.map(x => <BlogPost key={x._id} blogPost={x} />)
                         : <p>No Recent Blog Posts</p>
