@@ -1,20 +1,19 @@
-import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 
-import { AuthContext } from '../../contexts/AuthContext';
+import { useAuthContext } from '../../contexts/AuthContext';
 
 const Header = () => {
-    const { user } = useContext(AuthContext);
+    const { user } = useAuthContext();
 
-    const styleHandler = ({ isActive }) => "nav-link" + (isActive ? " btn btn-outline-secondary bg-secondary text-white" : "");
+    const activeClassNameHandler = ({ isActive }) => "nav-link" + (isActive ? " btn btn-outline-secondary bg-secondary text-white" : "");
 
     let guestNavigation = (
         <>
             <li className="nav-item">
-                <NavLink className={styleHandler} to="/login">Login</NavLink>
+                <NavLink className={activeClassNameHandler} to="/login">Login</NavLink>
             </li>
             <li className="nav-item">
-                <NavLink className={styleHandler} to="/register">Register</NavLink>
+                <NavLink className={activeClassNameHandler} to="/register">Register</NavLink>
             </li>
         </>
     );
@@ -22,13 +21,13 @@ const Header = () => {
     let userNavigation = (
         <>
             <li className="nav-item">
-                <NavLink className={styleHandler} to="/blog-post-create">Create a Post</NavLink>
+                <NavLink className={activeClassNameHandler} to="/blog-post-create">Create a Post</NavLink>
             </li>
             <li className="nav-item">
-                <NavLink className={styleHandler} to="/my-posts">My Posts</NavLink>
+                <NavLink className={activeClassNameHandler} to="/my-posts">My Posts</NavLink>
             </li>
             <li className="nav-item">
-                <NavLink className={styleHandler} to="/logout">Logout</NavLink>
+                <NavLink className={activeClassNameHandler} to="/logout">Logout</NavLink>
             </li>
         </>
     );
@@ -48,7 +47,7 @@ const Header = () => {
                     <div className="collapse navbar-collapse" id="navbarsExampleDefault">
                         <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                             <li className="nav-item">
-                                <NavLink className={styleHandler} to="/">All Posts</NavLink>
+                                <NavLink className={activeClassNameHandler} to="/">All Posts</NavLink>
                             </li>
                             {user.email
                                 ? userNavigation

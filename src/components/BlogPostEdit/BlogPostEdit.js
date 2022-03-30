@@ -1,15 +1,15 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import * as blogPostService from '../../services/blogPostService';
-import { AuthContext } from '../../contexts/AuthContext';
+import { useAuthContext } from '../../contexts/AuthContext';
 
 import './BlogPostEdit.css';
 
 const BlogPostEdit = () => {
     const navigate = useNavigate();
     const { blogPostId } = useParams();
-    const { user } = useContext(AuthContext);
+    const { user } = useAuthContext();
     const [categories, setCategories] = useState([]);
     const [blogPost, setBlogPost] = useState({});
     const [error, setError] = useState('');
@@ -47,7 +47,7 @@ const BlogPostEdit = () => {
         authorName = authorName.substring(0, index);
     }
 
-    const onBlogPostEdit = (e) => {
+    const blogPostEditHandler = (e) => {
         e.preventDefault();
         let formData = new FormData(e.currentTarget);
 
@@ -96,7 +96,7 @@ const BlogPostEdit = () => {
             <div className="col-sm-12 offset-md-1 col-md-10 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
                 <h2 className="heading-margin text-center">Edit this Post</h2>
                 <p className="error-blog-post-edit-message">{error}</p>
-                <form onSubmit={onBlogPostEdit} method="POST">
+                <form onSubmit={blogPostEditHandler} method="POST">
                     <div className="form-group">
                         <label htmlFor="blog-post-create-title">Title</label>
                         <input type="text" name="blog-post-create-title" className="form-control" id="blog-post-create-title" defaultValue={blogPost.title} placeholder="title" />

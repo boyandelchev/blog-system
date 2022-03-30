@@ -1,14 +1,14 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import * as blogPostService from '../../services/blogPostService';
-import { AuthContext } from '../../contexts/AuthContext';
+import { useAuthContext } from '../../contexts/AuthContext';
 
 import './BlogPostCreate.css';
 
 const BlogPostCreate = () => {
     const navigate = useNavigate();
-    const { user } = useContext(AuthContext);
+    const { user } = useAuthContext();
     const [categories, setCategories] = useState([]);
     const [error, setError] = useState('');
     const [notification, setNotification] = useState({ message: 'You have successfully created a blog post.', timeOut: 3000 });
@@ -36,7 +36,7 @@ const BlogPostCreate = () => {
         authorName = authorName.substring(0, index);
     }
 
-    const onBlogPostCreate = (e) => {
+    const blogPostCreateHandler = (e) => {
         e.preventDefault();
         let formData = new FormData(e.currentTarget);
 
@@ -83,7 +83,7 @@ const BlogPostCreate = () => {
             <div className="col-sm-12 offset-md-1 col-md-10 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
                 <h2 className="heading-margin text-center">Create a Post</h2>
                 <p className="error-blog-post-create-message">{error}</p>
-                <form onSubmit={onBlogPostCreate} method="POST">
+                <form onSubmit={blogPostCreateHandler} method="POST">
                     <div className="form-group">
                         <label htmlFor="blog-post-create-title">Title</label>
                         <input type="text" name="blog-post-create-title" className="form-control" id="blog-post-create-title" placeholder="title" />

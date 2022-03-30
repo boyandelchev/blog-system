@@ -1,17 +1,17 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import * as authService from '../../services/authService';
-import { AuthContext } from '../../contexts/AuthContext';
+import { useAuthContext } from '../../contexts/AuthContext';
 
 import './Register.css';
 
 const Register = () => {
     const navigate = useNavigate();
-    const { login } = useContext(AuthContext);
+    const { login } = useAuthContext();
     const [error, setError] = useState('');
 
-    const onRegisterHandler = (e) => {
+    const registerHandler = (e) => {
         e.preventDefault();
 
         let formData = new FormData(e.currentTarget);
@@ -52,7 +52,7 @@ const Register = () => {
             <div className="col-sm-12 offset-md-1 col-md-10 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
                 <h2 className="heading-margin text-center">Register</h2>
                 <p className="error-register-message">{error}</p>
-                <form onSubmit={onRegisterHandler} method="POST">
+                <form onSubmit={registerHandler} method="POST">
                     <div className="form-group">
                         <label htmlFor="email">Email address</label>
                         <input type="email" name="email" className="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" />

@@ -65,7 +65,7 @@ const Home = () => {
                 <div className="card-columns listrecent">
                     {blogPostsDesc.length > 0
                         ? blogPostsDesc.map(x => <BlogPost key={x._id} blogPost={x} />)
-                        : <p>No Blog Posts</p>
+                        : <p>No Recent Blog Posts</p>
                     }
                 </div>
             </section>

@@ -1,12 +1,12 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 
 import * as blogPostService from '../../services/blogPostService';
-import { AuthContext } from '../../contexts/AuthContext';
+import { useAuthContext } from '../../contexts/AuthContext';
 
 import MyBlogPost from './MyBlogPost';
 
 const MyBlogPosts = () => {
-    const { user } = useContext(AuthContext);
+    const { user } = useAuthContext();
     const [blogPosts, setBlogPosts] = useState([]);
 
     useEffect(() => {

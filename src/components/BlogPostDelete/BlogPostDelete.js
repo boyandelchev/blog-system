@@ -1,15 +1,15 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import * as blogPostService from '../../services/blogPostService';
-import { AuthContext } from '../../contexts/AuthContext';
+import { useAuthContext } from '../../contexts/AuthContext';
 
 import './BlogPostDelete.css';
 
 const BlogPostDelete = () => {
     const navigate = useNavigate();
     const { blogPostId } = useParams();
-    const { user } = useContext(AuthContext);
+    const { user } = useAuthContext();
     const [categories, setCategories] = useState([]);
     const [blogPost, setBlogPost] = useState({});
     const [error, setError] = useState('');
@@ -41,7 +41,7 @@ const BlogPostDelete = () => {
         categoriesData = categoriesData.categories;
     }
 
-    const onBlogPostDelete = (e) => {
+    const blogPostDeleteHandler = (e) => {
         e.preventDefault();
 
         blogPostService.deleteBlogPost(blogPostId, user.accessToken)
@@ -87,7 +87,7 @@ const BlogPostDelete = () => {
                             }
                         </select>
                     </div>
-                    <button type="submit" className="btn btn-primary" onClick={onBlogPostDelete}>Delete</button>
+                    <button type="submit" className="btn btn-primary" onClick={blogPostDeleteHandler}>Delete</button>
                 </form>
             </div>
         </div>

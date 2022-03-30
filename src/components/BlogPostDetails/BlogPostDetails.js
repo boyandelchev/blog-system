@@ -1,20 +1,19 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 
 import * as blogPostService from '../../services/blogPostService';
-import { AuthContext } from '../../contexts/AuthContext';
+import { useAuthContext } from '../../contexts/AuthContext';
 import useNotification from '../../hooks/useNotification';
 
 import BlogPostDetailsCommentForm from './BlogPostDetailsCommentForm';
 import BlogPostDetailsComment from './BlogPostDetailsComment';
 import BlogPostCard from './BlogPostCard';
-
 import './BlogPostDetails.css';
 
 const BlogPostDetails = () => {
     const navigate = useNavigate();
     const { blogPostId } = useParams();
-    const { user } = useContext(AuthContext);
+    const { user } = useAuthContext();
     const [blogPost, setBlogPost] = useState({});
     const [blogPosts, setBlogPosts] = useState([]);
     const [comments, setComments] = useState([]);
@@ -69,7 +68,7 @@ const BlogPostDetails = () => {
             .substring(0, 24);
     };
 
-    const onBlogPostDetailsCommentForm = (e) => {
+    const blogPostDetailsCommentFormHandler = (e) => {
         e.preventDefault();
 
         let formData = new FormData(e.currentTarget);
@@ -149,7 +148,7 @@ const BlogPostDetails = () => {
 
                         <p className="error-blog-post-details-comment-message">{error}</p>
                         {user._id
-                            ? <BlogPostDetailsCommentForm onBlogPostDetailsCommentForm={onBlogPostDetailsCommentForm} />
+                            ? <BlogPostDetailsCommentForm onBlogPostDetailsCommentForm={blogPostDetailsCommentFormHandler} />
                             : ''
                         }
 

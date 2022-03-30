@@ -1,15 +1,15 @@
-import { useContext, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import * as authService from '../../services/authService';
-import { AuthContext } from '../../contexts/AuthContext';
+import { useAuthContext } from '../../contexts/AuthContext';
 import useNotification from '../../hooks/useNotification';
 
 import './Login.css';
 
 const Login = () => {
     const navigate = useNavigate();
-    const { login } = useContext(AuthContext);
+    const { login } = useAuthContext();
     const [error, setError] = useState('');
 
     const { state } = useLocation();
@@ -19,7 +19,7 @@ const Login = () => {
         clearNotification();
     }, []);
 
-    const onLoginHandler = (e) => {
+    const loginHandler = (e) => {
         e.preventDefault();
 
         let formData = new FormData(e.currentTarget);
@@ -58,7 +58,7 @@ const Login = () => {
                 {notification}
                 <h2 className="heading-margin text-center">Login</h2>
                 <p className="error-login-message">{error}</p>
-                <form onSubmit={onLoginHandler} method="POST">
+                <form onSubmit={loginHandler} method="POST">
                     <div className="form-group">
                         <label htmlFor="email">Email address</label>
                         <input type="email" name="email" className="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" />
