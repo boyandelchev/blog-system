@@ -1,13 +1,14 @@
 const BlogPostDetailsCommentForm = ({
-    onBlogPostDetailsCommentForm,
+    blogPostDetailsCommentFormHandler,
+    inputChangeHandler,
 }) => {
     return (
         <div className="text-center">
-            <section className="mt-3">
-                <form onSubmit={onBlogPostDetailsCommentForm} method="POST">
-                    <div className="form-group">
+            <section>
+                <form onSubmit={blogPostDetailsCommentFormHandler} method="POST">
+                    <div>
                         <label htmlFor="commentContent" className="form-label">Let me know your views. Comment down below.</label>
-                        <textarea name="commentContent" id="commentContent" rows="5" className="form-control" placeholder="Add a comment"></textarea>
+                        <textarea name="commentContent" id="commentContent" rows="5" className="form-control" onChange={inputChangeHandler} placeholder="Add a comment"></textarea>
                     </div>
 
                     <input className="btn btn-primary mt-3" type="submit" value="Add a comment" />

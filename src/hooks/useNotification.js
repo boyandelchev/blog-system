@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
-import './useNotification.css';
+import Notification from '../components/Common/Notification';
 
-const useNotification = (message, milliseconds) => {
-    const [notification, setNotification] = useState(<p className="notification-hook">{message}</p>);
+const useNotification = (message, milliseconds = 3000) => {
+    const [notification, setNotification] = useState(<Notification message={message} />);
 
     const clearNotification = () => {
         setTimeout(() => {

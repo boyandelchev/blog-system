@@ -7,7 +7,7 @@ import { useAuthContext } from '../../contexts/AuthContext';
 const Logout = () => {
     const navigate = useNavigate();
     const { user, logout } = useAuthContext();
-    const [notification, setNotification] = useState({ message: 'You have successfully logged out.', timeOut: 5000 });
+    const [notification, setNotification] = useState({ message: 'You have successfully logged out.', timeOut: 3000 });
 
     useEffect(() => {
         authService.logout(user.accessToken)

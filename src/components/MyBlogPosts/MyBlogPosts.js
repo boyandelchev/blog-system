@@ -2,28 +2,24 @@ import { useState, useEffect } from 'react';
 
 import * as blogPostService from '../../services/blogPostService';
 import { useAuthContext } from '../../contexts/AuthContext';
+import useAuthorName from '../../hooks/useAuthorName';
 
 import MyBlogPost from './MyBlogPost';
 
 const MyBlogPosts = () => {
     const { user } = useAuthContext();
+    const authorName = useAuthorName(user.email);
     const [blogPosts, setBlogPosts] = useState([]);
 
     useEffect(() => {
         blogPostService.getAllMine(user._id)
-            .then(result => {
-                setBlogPosts(result);
+            .then(blogPostsResult => {
+                setBlogPosts(blogPostsResult);
             })
             .catch(err => {
                 console.log(err.message);
             });
     }, [user._id]);
-
-    let authorName = user.email;
-    let index = authorName.indexOf('@');
-    if (index) {
-        authorName = authorName.substring(0, index);
-    }
 
     return (
         <>

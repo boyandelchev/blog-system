@@ -1,9 +1,9 @@
+import useDate from "../../../hooks/useDate";
+
 const BlogPostDetailsComment = ({
     comment,
 }) => {
-    let date = new Date(comment._createdOn)
-        .toString()
-        .substring(0, 24);
+    const date = useDate(comment._createdOn);
 
     return (
         <div className="d-flex">

@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 
+import useDate from '../../../hooks/useDate';
+
 const BlogPost = ({
     blogPost,
 }) => {
-    let date = new Date(blogPost._createdOn)
-        .toString()
-        .substring(0, 24);
+    const date = useDate(blogPost._createdOn);
 
     return (
         <div className="col">

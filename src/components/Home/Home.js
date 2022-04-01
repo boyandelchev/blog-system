@@ -16,16 +16,16 @@ const Home = () => {
 
     useEffect(() => {
         blogPostService.getAll()
-            .then(result => {
-                setBlogPosts(result);
+            .then(blogPostsResult => {
+                setBlogPosts(blogPostsResult);
             })
             .catch(err => {
                 console.log(err.message);
             });
 
         blogPostService.getAllDescending()
-            .then(result => {
-                setBlogPostsDesc(result);
+            .then(blogPostsResult => {
+                setBlogPostsDesc(blogPostsResult);
             })
             .catch(err => {
                 console.log(err.message);
