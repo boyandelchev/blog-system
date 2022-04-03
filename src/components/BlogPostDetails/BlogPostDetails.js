@@ -5,17 +5,18 @@ import * as blogPostService from '../../services/blogPostService';
 import { useAuthContext } from '../../contexts/AuthContext';
 import useAuthorName from '../../hooks/useAuthorName';
 import useDate from '../../hooks/useDate';
-import useNotification from '../../hooks/useNotification';
-import { COMMENT_CONTENT_ERROR } from './BlogPostDetailsConstants';
-import { useCommentInputChangeHandler } from './BlogPostDetailsHelpers';
 import useValidateForm from '../../hooks/useValidateForm';
+import useNotification from '../../hooks/useNotification';
 
+import { COMMENT_CONTENT_ERROR } from './BlogPostDetailsConstants';
+import { useCommentChangeHandler } from './BlogPostDetailsHelpers';
 import BlogPostDetailsCommentForm from './BlogPostDetailsCommentForm';
 import BlogPostDetailsComment from './BlogPostDetailsComment';
 import BlogPostCard from './BlogPostCard';
 import './BlogPostDetails.css';
 
 const BlogPostDetails = () => {
+    const TIMEOUT = 3000;
     const navigate = useNavigate();
     const { blogPostId } = useParams();
     const { user } = useAuthContext();
@@ -26,8 +27,9 @@ const BlogPostDetails = () => {
     const [blogPosts, setBlogPosts] = useState([]);
     const [comments, setComments] = useState([]);
     const [error, setError] = useState('');
-    const inputChangeHandler = useCommentInputChangeHandler(setError);
+    const changeHandler = useCommentChangeHandler(setError);
     const validateForm = useValidateForm();
+    const [isDisabled, setIsDisabled] = useState(false);
 
     const { key, state } = useLocation();
     const [notification, clearNotification] = useNotification(state?.message, state?.timeOut);
@@ -37,8 +39,7 @@ const BlogPostDetails = () => {
             .then(blogPostResult => {
                 setBlogPost(blogPostResult);
             })
-            .catch(err => {
-                console.log(err.message);
+            .catch(() => {
                 navigate('/error');
             });
     }, [blogPostId]);
@@ -67,40 +68,46 @@ const BlogPostDetails = () => {
         clearNotification();
     }, []);
 
+    const blogPostDetailsCommentFormHandler = (e) => {
+        e.preventDefault();
+
+        if (!validateForm(error)) {
+            return;
+        }
+
+        let formData = new FormData(e.currentTarget);
+
+        let { commentContent: content } = Object.fromEntries(formData);
+
+        if (content === '') {
+            setError(COMMENT_CONTENT_ERROR);
+            return;
+        }
+
+        setIsDisabled(true);
+
+        blogPostService.createComment({
+            content,
+            authorName,
+            blogPostId,
+        }, user.accessToken)
+            .then(() => {
+                navigate(`/blog-post-details/${blogPostId}`);
+            })
+            .catch(err => {
+                console.log(err.message);
+                setError(err.message);
+            });
+
+        setTimeout(() => setIsDisabled(false), TIMEOUT);
+    };
+
     const ownerButtons = (
         <>
             <Link to={`/blog-post-edit/${blogPost._id}`}><button type="button" className="btn btn-warning m-2">Edit</button></Link>
             <Link to={`/blog-post-delete/${blogPost._id}`}><button type="button" className="btn btn-danger m-2">Delete</button></Link>
         </>
     );
-
-    const blogPostDetailsCommentFormHandler = (e) => {
-        e.preventDefault();
-
-        if (validateForm(error)) {
-            let formData = new FormData(e.currentTarget);
-
-            let { commentContent: content } = Object.fromEntries(formData);
-
-            if (content === '') {
-                setError(COMMENT_CONTENT_ERROR);
-                return;
-            }
-
-            blogPostService.createComment({
-                content,
-                authorName,
-                blogPostId,
-            }, user.accessToken)
-                .then(() => {
-                    navigate(`/blog-post-details/${blogPostId}`);
-                })
-                .catch(err => {
-                    console.log(err.message);
-                    setError(err.message);
-                });
-        }
-    };
 
     return (
         <>
@@ -111,7 +118,7 @@ const BlogPostDetails = () => {
                         <div className="mainheading">
                             <div className="row post-top-meta">
                                 <div className="col-md-2">
-                                    <a href="#"><img className="author-thumb" src="https://www.gravatar.com/avatar/e56154546cf4be74e393c62d1ae9f9d4?s=250&amp;d=mm&amp;r=x" alt="Sal" /></a>
+                                    <a href="#"><img className="author-thumb" src="/img/profile-image-32x32.png" alt="profile" /></a>
                                 </div>
                                 <div className="col-md-10">
                                     <a className="link-dark" href="#">Author: {authorName}</a>
@@ -148,7 +155,8 @@ const BlogPostDetails = () => {
                         {user._id
                             ? <BlogPostDetailsCommentForm
                                 blogPostDetailsCommentFormHandler={blogPostDetailsCommentFormHandler}
-                                inputChangeHandler={inputChangeHandler}
+                                changeHandler={changeHandler}
+                                isDisabled={isDisabled}
                             />
                             : ''
                         }

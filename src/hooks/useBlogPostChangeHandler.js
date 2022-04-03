@@ -2,12 +2,12 @@ import {
     TITLE_NAME, CONTENT_NAME, IMAGE_URL_NAME,
     TITLE_MIN_LENGTH, TITLE_MAX_LENGTH, CONTENT_MIN_LENGTH, CONTENT_MAX_LENGTH, IMAGE_URL_REGEX,
     TITLE_ERROR, CONTENT_ERROR, IMAGE_URL_ERROR
-} from '../constants';
+} from '../constants/constants';
 
 const regexImageUrl = new RegExp(IMAGE_URL_REGEX);
 
-const useBlogPostInputChangeHandler = (setErrors) => {
-    const inputChangeHandler = (e) => {
+const useBlogPostChangeHandler = (setErrors) => {
+    const changeHandler = (e) => {
         const { name, value } = e.target;
 
         if (name === TITLE_NAME) {
@@ -29,9 +29,11 @@ const useBlogPostInputChangeHandler = (setErrors) => {
                 setErrors(state => ({ ...state, imageUrl: '' }));
             }
         }
+
+        setErrors(state => ({ ...state, generalError: '' }));
     };
 
-    return inputChangeHandler;
+    return changeHandler;
 };
 
-export default useBlogPostInputChangeHandler;
+export default useBlogPostChangeHandler;

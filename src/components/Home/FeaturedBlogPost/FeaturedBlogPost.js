@@ -23,7 +23,7 @@ const FeaturedBlogPost = ({
                             <div className="metafooter">
                                 <div className="wrapfooter">
                                     <span className="meta-footer-thumb">
-                                        <a href="#"><img className="author-thumb" src="https://www.gravatar.com/avatar/e56154546cf4be74e393c62d1ae9f9d4?s=250&amp;d=mm&amp;r=x" alt="Sal" /></a>
+                                        <a href="#"><img className="author-thumb" src="/img/profile-image-32x32.png" alt="profile" /></a>
                                     </span>
                                     <span className="author-meta">
                                         <span className="post-name"><a className="text-decoration-none" href="#">{blogPost.authorName}</a></span><br />

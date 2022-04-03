@@ -2,10 +2,10 @@ import {
     EMAIL_NAME, PASSWORD_NAME, PASSWORD_REPEAT_NAME,
     PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH,
     EMAIL_ERROR, PASSWORD_ERROR
-} from '../constants';
+} from '../constants/constants';
 
-const useLoginRegisterInputChangeHandler = (setError) => {
-    const inputChangeHandler = (e) => {
+const useLoginRegisterChangeHandler = (setError) => {
+    const changeHandler = (e) => {
         const { name, value } = e.target;
 
         if (name === EMAIL_NAME) {
@@ -29,7 +29,7 @@ const useLoginRegisterInputChangeHandler = (setError) => {
         }
     };
 
-    return inputChangeHandler;
+    return changeHandler;
 };
 
-export default useLoginRegisterInputChangeHandler;
+export default useLoginRegisterChangeHandler;

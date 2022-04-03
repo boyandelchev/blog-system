@@ -3,10 +3,11 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 import * as authService from '../../services/authService';
 import { useAuthContext } from '../../contexts/AuthContext';
-import useLoginRegisterInputChangeHandler from '../../hooks/useLoginRegisterInputChangeHandler';
+import useLoginRegisterChangeHandler from '../../hooks/useLoginRegisterChangeHandler';
 import useValidateForm from '../../hooks/useValidateForm';
+import useDebounce from '../../hooks/useDebounce';
 import useNotification from '../../hooks/useNotification';
-import { EMPTY_FORM_ERROR } from '../../constants';
+import { EMPTY_FORM_ERROR } from '../../constants/constants';
 
 import './Login.css';
 
@@ -14,8 +15,9 @@ const Login = () => {
     const navigate = useNavigate();
     const { login } = useAuthContext();
     const [error, setError] = useState('');
-    const inputChangeHandler = useLoginRegisterInputChangeHandler(setError);
+    const changeHandler = useLoginRegisterChangeHandler(setError);
     const validateForm = useValidateForm();
+    const debounce = useDebounce();
 
     const { state } = useLocation();
     const [notification, clearNotification] = useNotification(state?.message, state?.timeOut);
@@ -27,27 +29,29 @@ const Login = () => {
     const loginHandler = (e) => {
         e.preventDefault();
 
-        if (validateForm(error)) {
-            let formData = new FormData(e.currentTarget);
-
-            let { email, password } = Object.fromEntries(formData);
-
-            if (email === '' || password === '') {
-                setError(EMPTY_FORM_ERROR);
-                return;
-            }
-
-            authService.login(email, password)
-                .then(authData => {
-                    login(authData);
-
-                    navigate('/');
-                })
-                .catch(err => {
-                    console.log(err);
-                    setError(err);
-                });
+        if (!validateForm(error)) {
+            return;
         }
+
+        let formData = new FormData(e.currentTarget);
+
+        let { email, password } = Object.fromEntries(formData);
+
+        if (email === '' || password === '') {
+            setError(EMPTY_FORM_ERROR);
+            return;
+        }
+
+        authService.login(email, password)
+            .then(authData => {
+                login(authData);
+
+                navigate('/');
+            })
+            .catch(err => {
+                console.log(err);
+                setError(err);
+            });
     };
 
     return (
@@ -60,11 +64,11 @@ const Login = () => {
                     <form onSubmit={loginHandler} method="POST">
                         <div className="mb-3">
                             <label htmlFor="email" className="form-label">Email address</label>
-                            <input type="email" name="email" className="form-control" id="email" onChange={inputChangeHandler} aria-describedby="emailHelp" placeholder="Enter email" />
+                            <input type="email" name="email" className="form-control" id="email" onChange={debounce(changeHandler)} aria-describedby="emailHelp" placeholder="Enter email" />
                         </div>
                         <div className="mb-3">
                             <label htmlFor="password" className="form-label">Password</label>
-                            <input type="password" name="password" className="form-control" id="password" onChange={inputChangeHandler} placeholder="Password" />
+                            <input type="password" name="password" className="form-control" id="password" onChange={debounce(changeHandler)} placeholder="Password" />
                         </div>
                         <button type="submit" className="btn btn-primary">Login</button>
                     </form>

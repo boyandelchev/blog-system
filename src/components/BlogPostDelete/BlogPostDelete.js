@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import * as blogPostService from '../../services/blogPostService';
 import { useAuthContext } from '../../contexts/AuthContext';
+import useBlogPostState from '../../hooks/useBlogPostState';
+import useCategoriesState from '../../hooks/useCategoriesState';
 
 import './BlogPostDelete.css';
 import ConfirmDialog from '../Common/ConfirmDialog';
@@ -11,33 +13,11 @@ const BlogPostDelete = () => {
     const navigate = useNavigate();
     const { blogPostId } = useParams();
     const { user } = useAuthContext();
-    const [categories, setCategories] = useState([]);
-    const [blogPost, setBlogPost] = useState({});
-    const [error, setError] = useState('');
+    const [errors, setErrors] = useState({ generalError: '' });
+    const [blogPost, setBlogPost] = useBlogPostState(blogPostId, setErrors);
+    const [categories, setCategories] = useCategoriesState(setErrors);
     const [notification, setNotification] = useState({ message: 'You have successfully deleted a blog post.', timeOut: 3000 });
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-
-    useEffect(() => {
-        blogPostService.getAllCategories()
-            .then(categoriesResult => {
-                let categoriesData = categoriesResult[0].categories;
-
-                setCategories(categoriesData);
-            })
-            .catch(err => {
-                console.log(err.message + ' (categories)');
-                setError(err.message + ' (categories)');
-            });
-
-        blogPostService.getOne(blogPostId)
-            .then(blogPostResult => {
-                setBlogPost(blogPostResult);
-            })
-            .catch(err => {
-                console.log(err.message);
-                setError(err.message);
-            });
-    }, [blogPostId]);
 
     const blogPostDeleteDialogHandler = (e) => {
         e.preventDefault();
@@ -54,7 +34,7 @@ const BlogPostDelete = () => {
             })
             .catch(err => {
                 console.log(err.message);
-                setError(err.message);
+                setErrors(state => ({ ...state, generalError: err.message }));
             })
             .finally(() => {
                 setShowDeleteDialog(false);
@@ -67,7 +47,7 @@ const BlogPostDelete = () => {
             <div className="row">
                 <div className="col-sm-12 offset-md-1 col-md-10 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
                     <h2 className="heading-margin text-center">Delete this Post</h2>
-                    <p className="error-blog-post-delete-message">{error}</p>
+                    <p className="error-blog-post-delete-message">{errors.generalError}</p>
                     <form>
                         <div className="mb-3">
                             <label htmlFor="blog-post-create-title" className="form-label">Title</label>

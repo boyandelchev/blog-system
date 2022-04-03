@@ -1,6 +1,6 @@
-const WRONG_ERROR_TYPE = 'Wrong error type for form validation!'
-
 const useValidateForm = () => {
+    const WRONG_ERROR_TYPE = 'Wrong error type for form validation!'
+
     const validateForm = errors => {
         let valid = true;
 

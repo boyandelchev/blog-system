@@ -34,7 +34,7 @@ const MyBlogPosts = () => {
                                     <span className="author-description">List of all posted articles by <b>{authorName}</b>.</span>
                                 </div>
                                 <div className="col-md-2 col-xs-12">
-                                    <img className="author-thumb" src="https://www.gravatar.com/avatar/e56154546cf4be74e393c62d1ae9f9d4?s=250&amp;d=mm&amp;r=x" alt="Sal" />
+                                    <img className="author-thumb" src="/img/profile-image-32x32.png" alt="profile" />
                                 </div>
                             </div>
                         </div>

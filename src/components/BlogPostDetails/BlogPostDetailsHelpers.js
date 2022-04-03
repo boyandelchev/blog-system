@@ -4,8 +4,8 @@ import {
     COMMENT_CONTENT_ERROR
 } from './BlogPostDetailsConstants';
 
-export const useCommentInputChangeHandler = (setError) => {
-    const inputChangeHandler = (e) => {
+export const useCommentChangeHandler = (setError) => {
+    const changeHandler = (e) => {
         const { name, value } = e.target;
 
         if (name === COMMENT_NAME) {
@@ -17,5 +17,5 @@ export const useCommentInputChangeHandler = (setError) => {
         }
     };
 
-    return inputChangeHandler;
+    return changeHandler;
 };
