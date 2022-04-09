@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 
 import * as blogPostService from '../../services/blogPostService';
-import { useAuthContext } from '../../contexts/AuthContext';
-import useAuthorName from '../../hooks/useAuthorName';
+import { AuthContext } from '../../contexts/AuthContext';
+import getAuthorNameFromUserEmail from '../../utils/getAuthorNameFromUserEmail';
 
 import MyBlogPost from './MyBlogPost';
 
 const MyBlogPosts = () => {
-    const { user } = useAuthContext();
-    const authorName = useAuthorName(user.email);
+    const { user } = useContext(AuthContext);
+    const authorName = getAuthorNameFromUserEmail(user.email);
     const [blogPosts, setBlogPosts] = useState([]);
 
     useEffect(() => {

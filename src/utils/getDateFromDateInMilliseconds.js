@@ -1,4 +1,4 @@
-const useDate = (dateInMilliseconds) => {
+const getDateFromDateInMilliseconds = (dateInMilliseconds) => {
     let date = new Date(dateInMilliseconds)
         .toString()
         .substring(0, 24);
@@ -6,4 +6,4 @@ const useDate = (dateInMilliseconds) => {
     return date;
 };
 
-export default useDate;
+export default getDateFromDateInMilliseconds;

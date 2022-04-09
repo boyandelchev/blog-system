@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 
-import * as blogPostService from '../services/blogPostService';
+import * as categoryService from '../services/categoryService';
 
-const useCategoriesState = (setErrors) => {
+const useCategoriesState = () => {
     const [categories, setCategories] = useState([]);
+    const [categoriesError, setCategoriesError] = useState('');
 
     useEffect(() => {
-        blogPostService.getAllCategories()
+        categoryService.getAll()
             .then(categoriesResult => {
                 let categoriesData = categoriesResult[0].categories;
 
@@ -14,11 +15,16 @@ const useCategoriesState = (setErrors) => {
             })
             .catch(err => {
                 console.log(err.message + ' (categories)');
-                setErrors(state => ({ ...state, generalError: err.message + ' (categories)' }));
+                setCategoriesError(err.message + ' (categories)');
             });
     }, []);
 
-    return [categories, setCategories];
+    return {
+        categories,
+        setCategories,
+        categoriesError,
+        setCategoriesError,
+    };
 };
 
 export default useCategoriesState;

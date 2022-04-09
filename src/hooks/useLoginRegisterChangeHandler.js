@@ -1,35 +1,35 @@
-import {
-    EMAIL_NAME, PASSWORD_NAME, PASSWORD_REPEAT_NAME,
-    PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH,
-    EMAIL_ERROR, PASSWORD_ERROR
-} from '../constants/constants';
+import { useState, useCallback } from 'react';
 
-const useLoginRegisterChangeHandler = (setError) => {
-    const changeHandler = (e) => {
+import { LOGIN_REGISTER } from '../constants/constants';
+
+const useLoginRegisterChangeHandler = () => {
+    const [error, setError] = useState('');
+
+    const changeHandler = useCallback((e) => {
         const { name, value } = e.target;
 
-        if (name === EMAIL_NAME) {
+        if (name === LOGIN_REGISTER.emailName) {
             if (value === '') {
-                setError(EMAIL_ERROR);
+                setError(LOGIN_REGISTER.emailError);
             } else {
                 setError('');
             }
-        } else if (name === PASSWORD_NAME) {
-            if (value.length < PASSWORD_MIN_LENGTH || value.length > PASSWORD_MAX_LENGTH) {
-                setError(PASSWORD_ERROR);
+        } else if (name === LOGIN_REGISTER.passwordName) {
+            if (value.length < LOGIN_REGISTER.passwordMinLength || value.length > LOGIN_REGISTER.passwordMaxLength) {
+                setError(LOGIN_REGISTER.passwordError);
             } else {
                 setError('');
             }
-        } else if (name === PASSWORD_REPEAT_NAME) {
-            if (value.length < PASSWORD_MIN_LENGTH || value.length > PASSWORD_MAX_LENGTH) {
-                setError(PASSWORD_ERROR);
+        } else if (name === LOGIN_REGISTER.passwordRepeatName) {
+            if (value.length < LOGIN_REGISTER.passwordMinLength || value.length > LOGIN_REGISTER.passwordMaxLength) {
+                setError(LOGIN_REGISTER.passwordError);
             } else {
                 setError('');
             }
         }
-    };
+    }, []);
 
-    return changeHandler;
+    return { error, setError, changeHandler };
 };
 
 export default useLoginRegisterChangeHandler;

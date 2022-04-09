@@ -1,27 +1,27 @@
 import { Link } from 'react-router-dom';
 
-import useDate from '../../../hooks/useDate';
+import getDateFromDateInMilliseconds from '../../../utils/getDateFromDateInMilliseconds';
 
 const BlogPostCard = ({
     blogPost,
 }) => {
-    const date = useDate(blogPost._createdOn);
+    const date = getDateFromDateInMilliseconds(blogPost._createdOn);
 
     return (
         <div className="col-md-4">
             <div className="card">
                 <Link to={`/blog-post-details/${blogPost._id}`}>
-                    <img className="img-fluid img-thumb" src={blogPost.imageUrl} alt="" />
+                    <img className="img-fluid img-thumb" src={blogPost.imageURL} alt="" />
                 </Link>
                 <div className="card-body">
                     <h2 className="card-title"><Link className="text-decoration-none" to={`/blog-post-details/${blogPost._id}`}>{blogPost.title}</Link></h2>
                     <div className="metafooter">
                         <div className="wrapfooter">
                             <span className="meta-footer-thumb">
-                                <a href="#"><img className="author-thumb" src="/img/profile-image-32x32.png" alt="profile" /></a>
+                                <a href="# "><img className="author-thumb" src="/img/profile-image-32x32.png" alt="profile" /></a>
                             </span>
                             <span className="author-meta">
-                                <span className="post-name"><a className="text-decoration-none" href="#">{blogPost.authorName}</a></span><br />
+                                <span className="post-name"><a className="text-decoration-none" href="# ">{blogPost.authorName}</a></span><br />
                                 <span className="post-date">{date}</span>
                             </span>
                             <span className="post-read-more">

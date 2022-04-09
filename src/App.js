@@ -13,8 +13,8 @@ import BlogPostEdit from './components/BlogPostEdit';
 import BlogPostDelete from './components/BlogPostDelete';
 import BlogPostDetails from './components/BlogPostDetails';
 import Footer from './components/Footer';
-import ErrorPage from './components/ErrorPage';
-import ErrorBoundary from './components/Common/ErrorBoundary';
+import ErrorPage from './components/common/ErrorPage';
+import ErrorBoundary from './components/common/ErrorBoundary';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 

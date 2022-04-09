@@ -1,9 +1,10 @@
+import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 
-import { useAuthContext } from '../../contexts/AuthContext';
+import { AuthContext } from '../../contexts/AuthContext';
 
 const Header = () => {
-    const { user } = useAuthContext();
+    const { user } = useContext(AuthContext);
 
     const activeClassNameHandler = ({ isActive }) => "nav-link" + (isActive ? " btn btn-outline-secondary bg-secondary text-white" : "");
 

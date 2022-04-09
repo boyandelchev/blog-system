@@ -22,7 +22,9 @@ const Home = () => {
             .catch(err => {
                 console.log(err.message);
             });
+    }, []);
 
+    useEffect(() => {
         blogPostService.getAllDescending()
             .then(blogPostsResult => {
                 setBlogPostsDesc(blogPostsResult);
@@ -34,7 +36,7 @@ const Home = () => {
 
     useEffect(() => {
         clearNotification();
-    }, []);
+    }, [clearNotification]);
 
     return (
         <div className="container">

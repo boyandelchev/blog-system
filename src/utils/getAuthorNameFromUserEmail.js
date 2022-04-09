@@ -1,4 +1,4 @@
-const useAuthorName = (userEmail) => {
+const getAuthorNameFromUserEmail = (userEmail) => {
     let index = userEmail.indexOf('@');
     let authorName = userEmail;
 
@@ -9,4 +9,4 @@ const useAuthorName = (userEmail) => {
     return authorName;
 };
 
-export default useAuthorName;
+export default getAuthorNameFromUserEmail;

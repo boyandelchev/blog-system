@@ -1,7 +1,7 @@
-const baseUrl = 'http://localhost:3030/users';
+const baseURL = 'http://localhost:3030/users';
 
 export const register = async (email, password) => {
-    let res = await fetch(`${baseUrl}/register`, {
+    let res = await fetch(`${baseURL}/register`, {
         method: 'POST',
         headers: {
             'content-type': 'application/json'
@@ -19,7 +19,7 @@ export const register = async (email, password) => {
 };
 
 export const login = async (email, password) => {
-    let res = await fetch(`${baseUrl}/login`, {
+    let res = await fetch(`${baseURL}/login`, {
         method: 'POST',
         headers: {
             'content-type': 'application/json'
@@ -37,7 +37,7 @@ export const login = async (email, password) => {
 };
 
 export const logout = (token) => {
-    return fetch(`${baseUrl}/logout`, {
+    return fetch(`${baseURL}/logout`, {
         headers: {
             'X-Authorization': token,
         }

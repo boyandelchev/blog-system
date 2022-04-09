@@ -1,9 +1,9 @@
-import useDate from "../../../hooks/useDate";
+import getDateFromDateInMilliseconds from "../../../utils/getDateFromDateInMilliseconds";
 
 const BlogPostDetailsComment = ({
     comment,
 }) => {
-    const date = useDate(comment._createdOn);
+    const date = getDateFromDateInMilliseconds(comment._createdOn);
 
     return (
         <div className="d-flex">

@@ -1,12 +1,10 @@
-import useDebounce from '../../../hooks/useDebounce';
+import debounce from '../../../utils/debounce';
 
 const BlogPostDetailsCommentForm = ({
     blogPostDetailsCommentFormHandler,
     changeHandler,
     isDisabled,
 }) => {
-    const debounce = useDebounce();
-
     return (
         <div className="text-center">
             <section>

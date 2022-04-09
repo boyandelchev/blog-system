@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import * as authService from '../../services/authService';
-import { useAuthContext } from '../../contexts/AuthContext';
+import { AuthContext } from '../../contexts/AuthContext';
 import useLoginRegisterChangeHandler from '../../hooks/useLoginRegisterChangeHandler';
-import useValidateForm from '../../hooks/useValidateForm';
-import useDebounce from '../../hooks/useDebounce';
+import validateForm from '../../utils/validateForm';
+import debounce from '../../utils/debounce';
 import useNotification from '../../hooks/useNotification';
 import { EMPTY_FORM_ERROR } from '../../constants/constants';
 
@@ -13,18 +13,15 @@ import './Login.css';
 
 const Login = () => {
     const navigate = useNavigate();
-    const { login } = useAuthContext();
-    const [error, setError] = useState('');
-    const changeHandler = useLoginRegisterChangeHandler(setError);
-    const validateForm = useValidateForm();
-    const debounce = useDebounce();
+    const { login } = useContext(AuthContext);
+    const { error, setError, changeHandler } = useLoginRegisterChangeHandler();
 
     const { state } = useLocation();
     const [notification, clearNotification] = useNotification(state?.message, state?.timeOut);
 
     useEffect(() => {
         clearNotification();
-    }, []);
+    }, [clearNotification]);
 
     const loginHandler = (e) => {
         e.preventDefault();

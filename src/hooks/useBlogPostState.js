@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 
 import * as blogPostService from '../services/blogPostService';
 
-const useBlogPostState = (blogPostId, setErrors) => {
+const useBlogPostState = (blogPostId) => {
     const [blogPost, setBlogPost] = useState({});
+    const [blogPostError, setBlogPostError] = useState('');
 
     useEffect(() => {
         blogPostService.getOne(blogPostId)
@@ -12,11 +13,16 @@ const useBlogPostState = (blogPostId, setErrors) => {
             })
             .catch(err => {
                 console.log(err.message);
-                setErrors(state => ({ ...state, generalError: err.message }));
+                setBlogPostError(err.message);
             });
     }, [blogPostId]);
 
-    return [blogPost, setBlogPost];
+    return {
+        blogPost,
+        setBlogPost,
+        blogPostError,
+        setBlogPostError,
+    };
 };
 
 export default useBlogPostState;

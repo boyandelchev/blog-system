@@ -1,14 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 
 import * as blogPostService from '../../services/blogPostService';
-import { useAuthContext } from '../../contexts/AuthContext';
-import useAuthorName from '../../hooks/useAuthorName';
-import useDate from '../../hooks/useDate';
-import useValidateForm from '../../hooks/useValidateForm';
+import * as commentService from '../../services/commentService';
+import { AuthContext } from '../../contexts/AuthContext';
+import getDateFromDateInMilliseconds from '../../utils/getDateFromDateInMilliseconds';
+import getAuthorNameFromUserEmail from '../../utils/getAuthorNameFromUserEmail';
+import validateForm from '../../utils/validateForm';
 import useNotification from '../../hooks/useNotification';
 
-import { COMMENT_CONTENT_ERROR } from './BlogPostDetailsConstants';
+import { COMMENT_CONTENT_MIN_LENGTH, COMMENT_CONTENT_ERROR } from './BlogPostDetailsConstants';
 import { useCommentChangeHandler } from './BlogPostDetailsHelpers';
 import BlogPostDetailsCommentForm from './BlogPostDetailsCommentForm';
 import BlogPostDetailsComment from './BlogPostDetailsComment';
@@ -16,22 +17,20 @@ import BlogPostCard from './BlogPostCard';
 import './BlogPostDetails.css';
 
 const BlogPostDetails = () => {
-    const TIMEOUT = 3000;
+    const timeout = 3000;
     const navigate = useNavigate();
     const { blogPostId } = useParams();
-    const { user } = useAuthContext();
-    const authorName = useAuthorName(user.email);
+    const { user } = useContext(AuthContext);
     const [blogPost, setBlogPost] = useState({});
-    const createdOnDate = useDate(blogPost._createdOn);
-    const updatedOnDate = useDate(blogPost._updatedOn);
-    const [blogPosts, setBlogPosts] = useState([]);
+    const createdOnDate = getDateFromDateInMilliseconds(blogPost._createdOn);
+    const updatedOnDate = getDateFromDateInMilliseconds(blogPost._updatedOn);
+    const authorName = getAuthorNameFromUserEmail(user.email);
     const [comments, setComments] = useState([]);
-    const [error, setError] = useState('');
-    const changeHandler = useCommentChangeHandler(setError);
-    const validateForm = useValidateForm();
+    const [blogPosts, setBlogPosts] = useState([]);
+    const { error, setError, changeHandler } = useCommentChangeHandler();
     const [isDisabled, setIsDisabled] = useState(false);
 
-    const { key, state } = useLocation();
+    const { state } = useLocation();
     const [notification, clearNotification] = useNotification(state?.message, state?.timeOut);
 
     useEffect(() => {
@@ -42,17 +41,17 @@ const BlogPostDetails = () => {
             .catch(() => {
                 navigate('/error');
             });
-    }, [blogPostId]);
+    }, [blogPostId, navigate]);
 
     useEffect(() => {
-        blogPostService.getAllComments(blogPostId)
+        commentService.getAll(blogPostId)
             .then(commentsResult => {
                 setComments(commentsResult);
             })
             .catch(err => {
                 console.log(err.message);
             });
-    }, [blogPostId, key]);
+    }, [blogPostId]);
 
     useEffect(() => {
         blogPostService.getLastThree()
@@ -66,7 +65,7 @@ const BlogPostDetails = () => {
 
     useEffect(() => {
         clearNotification();
-    }, []);
+    }, [clearNotification]);
 
     const blogPostDetailsCommentFormHandler = (e) => {
         e.preventDefault();
@@ -79,27 +78,27 @@ const BlogPostDetails = () => {
 
         let { commentContent: content } = Object.fromEntries(formData);
 
-        if (content === '') {
+        if (content.length < COMMENT_CONTENT_MIN_LENGTH) {
             setError(COMMENT_CONTENT_ERROR);
             return;
         }
 
         setIsDisabled(true);
 
-        blogPostService.createComment({
+        commentService.create({
             content,
             authorName,
             blogPostId,
         }, user.accessToken)
-            .then(() => {
-                navigate(`/blog-post-details/${blogPostId}`);
+            .then(commentResult => {
+                setComments(state => [...state, commentResult]);
             })
             .catch(err => {
                 console.log(err.message);
                 setError(err.message);
             });
 
-        setTimeout(() => setIsDisabled(false), TIMEOUT);
+        setTimeout(() => setIsDisabled(false), timeout);
     };
 
     const ownerButtons = (
@@ -118,10 +117,10 @@ const BlogPostDetails = () => {
                         <div className="mainheading">
                             <div className="row post-top-meta">
                                 <div className="col-md-2">
-                                    <a href="#"><img className="author-thumb" src="/img/profile-image-32x32.png" alt="profile" /></a>
+                                    <a href="# "><img className="author-thumb" src="/img/profile-image-32x32.png" alt="profile" /></a>
                                 </div>
                                 <div className="col-md-10">
-                                    <a className="link-dark" href="#">Author: {authorName}</a>
+                                    <a className="link-dark" href="# ">Author: {blogPost.authorName}</a>
                                     <span className="author-description"></span>
                                     <p className="createdOn-date">Posted on: {createdOnDate}</p>
                                     {blogPost._updatedOn
@@ -132,14 +131,14 @@ const BlogPostDetails = () => {
                             </div>
                             <h1 className="posttitle">{blogPost.title}</h1>
                         </div>
-                        <img className="featured-image img-fluid" src={blogPost.imageUrl} alt="" />
+                        <img className="featured-image img-fluid" src={blogPost.imageURL} alt="" />
                         <div className="article-post">
                             <p>{blogPost.content}</p>
                         </div>
                         <div className="after-post-tags">
                             <ul className="tags">
                                 {blogPost.categories
-                                    ? blogPost.categories.map(x => <li key={x}><a className="text-decoration-none" href="#">{x}</a></li>)
+                                    ? blogPost.categories.map(x => <li key={x}><a className="text-decoration-none" href="# ">{x}</a></li>)
                                     : ''
                                 }
                             </ul>

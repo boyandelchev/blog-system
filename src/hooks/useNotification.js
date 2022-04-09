@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import Notification from '../components/Common/Notification';
+import Notification from '../components/common/Notification';
 
 const useNotification = (message, timeout = 3000) => {
     const [notification, setNotification] = useState(<Notification message={message} />);

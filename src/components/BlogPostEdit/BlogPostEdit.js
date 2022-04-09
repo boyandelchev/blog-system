@@ -1,30 +1,27 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import * as blogPostService from '../../services/blogPostService';
-import { useAuthContext } from '../../contexts/AuthContext';
-import useAuthorName from '../../hooks/useAuthorName';
+import { AuthContext } from '../../contexts/AuthContext';
+import getAuthorNameFromUserEmail from '../../utils/getAuthorNameFromUserEmail';
 import useBlogPostState from '../../hooks/useBlogPostState';
 import useCategoriesState from '../../hooks/useCategoriesState';
 import useBlogPostChangeHandler from '../../hooks/useBlogPostChangeHandler';
-import useValidateForm from '../../hooks/useValidateForm';
-import useDebounce from '../../hooks/useDebounce';
-import { EMPTY_FORM_ERROR, TITLE_NAME, CONTENT_NAME, IMAGE_URL_NAME, CATEGORIES_NAME } from '../../constants/constants';
+import validateForm from '../../utils/validateForm';
+import debounce from '../../utils/debounce';
+import { EMPTY_FORM_ERROR, BLOG_POST } from '../../constants/constants';
 
 import './BlogPostEdit.css';
 
 const BlogPostEdit = () => {
     const navigate = useNavigate();
     const { blogPostId } = useParams();
-    const { user } = useAuthContext();
-    const authorName = useAuthorName(user.email);
-    const [errors, setErrors] = useState({ generalError: '', title: '', content: '', imageUrl: '' });
-    const [blogPost, setBlogPost] = useBlogPostState(blogPostId, setErrors);
-    const [categories, setCategories] = useCategoriesState(setErrors);
-    const changeHandler = useBlogPostChangeHandler(setErrors);
-    const validateForm = useValidateForm();
-    const debounce = useDebounce();
-    const [notification, setNotification] = useState({ message: 'You have successfully edited this blog post.', timeOut: 3000 });
+    const { user } = useContext(AuthContext);
+    const authorName = getAuthorNameFromUserEmail(user.email);
+    const { blogPost, setBlogPost, blogPostError } = useBlogPostState(blogPostId);
+    const { categories, categoriesError } = useCategoriesState();
+    const { errors, setErrors, changeHandler } = useBlogPostChangeHandler();
+    const [notification] = useState({ message: 'You have successfully edited this blog post.', timeOut: 3000 });
 
     const categoriesChangeHandler = (e) => {
         const selectedCategories = [...e.target.options]
@@ -43,22 +40,21 @@ const BlogPostEdit = () => {
 
         let formData = new FormData(e.currentTarget);
 
-        let _id = blogPostId;
-        let title = formData.get(TITLE_NAME);
-        let content = formData.get(CONTENT_NAME);
-        let imageUrl = formData.get(IMAGE_URL_NAME);
-        let categories = formData.getAll(CATEGORIES_NAME);
+        let title = formData.get(BLOG_POST.titleName);
+        let content = formData.get(BLOG_POST.contentName);
+        let imageURL = formData.get(BLOG_POST.imageURLName);
+        let categories = formData.getAll(BLOG_POST.categoriesName);
 
-        if (title === '' || content === '' || imageUrl === '') {
+        if (title === '' || content === '' || imageURL === '') {
             setErrors(state => ({ ...state, generalError: EMPTY_FORM_ERROR }));
             return;
         }
 
         blogPostService.edit({
-            _id,
+            _id: blogPostId,
             title,
             content,
-            imageUrl,
+            imageURL,
             categories,
             authorName,
         }, user.accessToken)
@@ -76,7 +72,7 @@ const BlogPostEdit = () => {
             <div className="row">
                 <div className="col-sm-12 offset-md-1 col-md-10 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
                     <h2 className="heading-margin text-center">Edit this Post</h2>
-                    <p className="error-blog-post-edit-message">{errors.generalError}</p>
+                    <p className="error-blog-post-edit-message">{errors.generalError || blogPostError || categoriesError}</p>
                     <form onSubmit={blogPostEditHandler} method="POST">
                         <div className="mb-3">
                             <label htmlFor="blog-post-create-title" className="form-label">Title</label>
@@ -90,8 +86,8 @@ const BlogPostEdit = () => {
                         </div>
                         <div className="mb-3">
                             <label htmlFor="blog-post-create-image-url" className="form-label">Image URL</label>
-                            <input type="text" name="blog-post-create-image-url" className="form-control" id="blog-post-create-image-url" defaultValue={blogPost.imageUrl} onChange={debounce(changeHandler)} placeholder="image URL" />
-                            <p className="error-blog-post-edit-message">{errors.imageUrl}</p>
+                            <input type="text" name="blog-post-create-image-url" className="form-control" id="blog-post-create-image-url" defaultValue={blogPost.imageURL} onChange={debounce(changeHandler)} placeholder="image URL" />
+                            <p className="error-blog-post-edit-message">{errors.imageURL}</p>
                         </div>
                         <div className="mb-3">
                             <label htmlFor="blog-post-create-categories" className="form-label">Select categories</label>

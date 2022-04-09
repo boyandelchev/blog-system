@@ -1,22 +1,19 @@
-import { useState } from 'react';
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import * as authService from '../../services/authService';
-import { useAuthContext } from '../../contexts/AuthContext';
+import { AuthContext } from '../../contexts/AuthContext';
 import useLoginRegisterChangeHandler from '../../hooks/useLoginRegisterChangeHandler';
-import useValidateForm from '../../hooks/useValidateForm';
-import useDebounce from '../../hooks/useDebounce';
-import { EMPTY_FORM_ERROR, PASSWORDS_MISMATCH_ERROR } from '../../constants/constants';
+import validateForm from '../../utils/validateForm';
+import debounce from '../../utils/debounce';
+import { EMPTY_FORM_ERROR, LOGIN_REGISTER } from '../../constants/constants';
 
 import './Register.css';
 
 const Register = () => {
     const navigate = useNavigate();
-    const { login } = useAuthContext();
-    const [error, setError] = useState('');
-    const changeHandler = useLoginRegisterChangeHandler(setError);
-    const validateForm = useValidateForm();
-    const debounce = useDebounce();
+    const { login } = useContext(AuthContext);
+    const { error, setError, changeHandler } = useLoginRegisterChangeHandler();
 
     const registerHandler = (e) => {
         e.preventDefault();
@@ -39,7 +36,7 @@ const Register = () => {
         }
 
         if (password !== repeatPassword) {
-            setError(PASSWORDS_MISMATCH_ERROR);
+            setError(LOGIN_REGISTER.passwordsMismatchError);
             return;
         }
 

@@ -1,11 +1,15 @@
+import { useState, useCallback } from 'react';
+
 import {
     COMMENT_NAME,
     COMMENT_CONTENT_MIN_LENGTH, COMMENT_CONTENT_MAX_LENGTH,
     COMMENT_CONTENT_ERROR
 } from './BlogPostDetailsConstants';
 
-export const useCommentChangeHandler = (setError) => {
-    const changeHandler = (e) => {
+export const useCommentChangeHandler = () => {
+    const [error, setError] = useState('');
+
+    const changeHandler = useCallback((e) => {
         const { name, value } = e.target;
 
         if (name === COMMENT_NAME) {
@@ -15,7 +19,7 @@ export const useCommentChangeHandler = (setError) => {
                 setError('');
             }
         }
-    };
+    }, []);
 
-    return changeHandler;
+    return { error, setError, changeHandler };
 };

@@ -10,9 +10,7 @@ const ConfirmDialog = ({
             <Modal.Header closeButton>
                 <Modal.Title>Are you sure you want to permanently delete this item?</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
-                <p>This action is irreversible!</p>
-            </Modal.Body>
+            <Modal.Body>This action is irreversible!</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={onClose}>Cancel</Button>
                 <Button variant="primary" onClick={onSave}>Confirm</Button>
