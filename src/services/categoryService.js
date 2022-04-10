@@ -1,5 +1,6 @@
-import { request } from './requester';
+import * as request from './requester';
 
 const baseURL = 'http://localhost:3030/data/categories';
 
-export const getAll = () => request(baseURL);
+export const getAll = () => request.get(baseURL)
+    .then(result => result[0].categories);

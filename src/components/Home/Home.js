@@ -16,8 +16,8 @@ const Home = () => {
 
     useEffect(() => {
         blogPostService.getAll()
-            .then(blogPostsResult => {
-                setBlogPosts(blogPostsResult);
+            .then(blogPostsData => {
+                setBlogPosts(blogPostsData);
             })
             .catch(err => {
                 console.log(err.message);
@@ -26,8 +26,8 @@ const Home = () => {
 
     useEffect(() => {
         blogPostService.getAllDescending()
-            .then(blogPostsResult => {
-                setBlogPostsDesc(blogPostsResult);
+            .then(blogPostsData => {
+                setBlogPostsDesc(blogPostsData);
             })
             .catch(err => {
                 console.log(err.message);

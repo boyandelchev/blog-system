@@ -8,8 +8,8 @@ const useBlogPostState = (blogPostId) => {
 
     useEffect(() => {
         blogPostService.getOne(blogPostId)
-            .then(blogPostResult => {
-                setBlogPost(blogPostResult);
+            .then(blogPostData => {
+                setBlogPost(blogPostData);
             })
             .catch(err => {
                 console.log(err.message);

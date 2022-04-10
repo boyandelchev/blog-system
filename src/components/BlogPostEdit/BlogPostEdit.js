@@ -57,7 +57,7 @@ const BlogPostEdit = () => {
             imageURL,
             categories,
             authorName,
-        }, user.accessToken)
+        })
             .then(() => {
                 navigate(`/blog-post-details/${blogPostId}`, { state: notification });
             })

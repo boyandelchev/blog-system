@@ -13,8 +13,8 @@ const MyBlogPosts = () => {
 
     useEffect(() => {
         blogPostService.getAllMine(user._id)
-            .then(blogPostsResult => {
-                setBlogPosts(blogPostsResult);
+            .then(blogPostsData => {
+                setBlogPosts(blogPostsData);
             })
             .catch(err => {
                 console.log(err.message);

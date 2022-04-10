@@ -1,45 +1,9 @@
+import * as authRequest from './requester';
+
 const baseURL = 'http://localhost:3030/users';
 
-export const register = async (email, password) => {
-    let res = await fetch(`${baseURL}/register`, {
-        method: 'POST',
-        headers: {
-            'content-type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
-    });
+export const register = (email, password) => authRequest.authPost(`${baseURL}/register`, { email, password });
 
-    let jsonResult = await res.json();
+export const login = (email, password) => authRequest.authPost(`${baseURL}/login`, { email, password });
 
-    if (res.status === 409) {
-        throw jsonResult.message;
-    }
-
-    return jsonResult;
-};
-
-export const login = async (email, password) => {
-    let res = await fetch(`${baseURL}/login`, {
-        method: 'POST',
-        headers: {
-            'content-type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
-    });
-
-    let jsonResult = await res.json();
-
-    if (res.status === 403) {
-        throw jsonResult.message;
-    }
-
-    return jsonResult;
-};
-
-export const logout = (token) => {
-    return fetch(`${baseURL}/logout`, {
-        headers: {
-            'X-Authorization': token,
-        }
-    });
-};
+export const logout = () => authRequest.authGet(`${baseURL}/logout`);

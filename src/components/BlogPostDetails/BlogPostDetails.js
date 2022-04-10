@@ -35,8 +35,8 @@ const BlogPostDetails = () => {
 
     useEffect(() => {
         blogPostService.getOne(blogPostId)
-            .then(blogPostResult => {
-                setBlogPost(blogPostResult);
+            .then(blogPostData => {
+                setBlogPost(blogPostData);
             })
             .catch(() => {
                 navigate('/error');
@@ -45,8 +45,8 @@ const BlogPostDetails = () => {
 
     useEffect(() => {
         commentService.getAll(blogPostId)
-            .then(commentsResult => {
-                setComments(commentsResult);
+            .then(commentsData => {
+                setComments(commentsData);
             })
             .catch(err => {
                 console.log(err.message);
@@ -55,8 +55,8 @@ const BlogPostDetails = () => {
 
     useEffect(() => {
         blogPostService.getLastThree()
-            .then(blogPostsResult => {
-                setBlogPosts(blogPostsResult);
+            .then(blogPostsData => {
+                setBlogPosts(blogPostsData);
             })
             .catch(err => {
                 console.log(err.message);
@@ -89,9 +89,9 @@ const BlogPostDetails = () => {
             content,
             authorName,
             blogPostId,
-        }, user.accessToken)
-            .then(commentResult => {
-                setComments(state => [...state, commentResult]);
+        })
+            .then(commentData => {
+                setComments(state => [...state, commentData]);
             })
             .catch(err => {
                 console.log(err.message);

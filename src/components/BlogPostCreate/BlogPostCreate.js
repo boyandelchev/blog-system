@@ -45,7 +45,7 @@ const BlogPostCreate = () => {
             imageURL,
             categories,
             authorName,
-        }, user.accessToken)
+        })
             .then(() => {
                 navigate('/', { state: notification });
             })

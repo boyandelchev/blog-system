@@ -1,8 +1,7 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import * as blogPostService from '../../services/blogPostService';
-import { AuthContext } from '../../contexts/AuthContext';
 import useBlogPostState from '../../hooks/useBlogPostState';
 import useCategoriesState from '../../hooks/useCategoriesState';
 
@@ -12,7 +11,6 @@ import ConfirmDialog from '../common/ConfirmDialog';
 const BlogPostDelete = () => {
     const navigate = useNavigate();
     const { blogPostId } = useParams();
-    const { user } = useContext(AuthContext);
     const { blogPost, blogPostError } = useBlogPostState(blogPostId);
     const { categories, categoriesError } = useCategoriesState();
     const [error, setError] = useState('');
@@ -28,7 +26,7 @@ const BlogPostDelete = () => {
     const blogPostDeleteHandler = (e) => {
         e.preventDefault();
 
-        blogPostService.deleteBlogPost(blogPostId, user.accessToken)
+        blogPostService.deleteBlogPost(blogPostId)
             .then(() => {
                 navigate('/', { state: notification });
             })

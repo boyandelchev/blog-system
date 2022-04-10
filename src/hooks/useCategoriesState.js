@@ -8,9 +8,7 @@ const useCategoriesState = () => {
 
     useEffect(() => {
         categoryService.getAll()
-            .then(categoriesResult => {
-                let categoriesData = categoriesResult[0].categories;
-
+            .then(categoriesData => {
                 setCategories(categoriesData);
             })
             .catch(err => {
