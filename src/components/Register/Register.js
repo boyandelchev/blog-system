@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import * as authService from '../../services/authService';
 import { AuthContext } from '../../contexts/AuthContext';
+import { NotificationContext } from '../../contexts/NotificationContext';
 import useLoginRegisterChangeHandler from '../../hooks/useLoginRegisterChangeHandler';
 import validateForm from '../../utils/validateForm';
 import debounce from '../../utils/debounce';
@@ -11,8 +12,10 @@ import { EMPTY_FORM_ERROR, LOGIN_REGISTER } from '../../constants/constants';
 import './Register.css';
 
 const Register = () => {
+    const notificationMessage = 'You have successfully registered.';
     const navigate = useNavigate();
     const { login } = useContext(AuthContext);
+    const { showNotificationSuccess } = useContext(NotificationContext);
     const { error, setError, changeHandler } = useLoginRegisterChangeHandler();
 
     const registerHandler = (e) => {
@@ -43,7 +46,7 @@ const Register = () => {
         authService.register(email, password)
             .then(authData => {
                 login(authData);
-
+                showNotificationSuccess(notificationMessage);
                 navigate('/');
             })
             .catch(err => {

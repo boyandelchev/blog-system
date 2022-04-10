@@ -17,9 +17,9 @@ export const getAllMine = (userId) => {
 };
 
 export const getLastThree = () => {
-    const query = encodeURIComponent('_id,title,imageURL,_createdOn,authorName&sortBy=_createdOn desc&offset=0&pageSize=3');
+    const query = encodeURI('?select=_id,title,imageURL,_createdOn,authorName&sortBy=_createdOn desc&offset=0&pageSize=3');
 
-    return request.get(`${baseURL}?select=${query}`);
+    return request.get(baseURL + query);
 };
 
 export const getOne = (blogPostId) => request.get(`${baseURL}/${blogPostId}`);

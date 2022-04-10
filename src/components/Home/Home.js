@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 
 import * as blogPostService from '../../services/blogPostService';
-import useNotification from '../../hooks/useNotification';
 
 import FeaturedBlogPost from './FeaturedBlogPost';
 import BlogPost from './BlogPost';
@@ -10,9 +8,6 @@ import BlogPost from './BlogPost';
 const Home = () => {
     const [blogPosts, setBlogPosts] = useState([]);
     const [blogPostsDesc, setBlogPostsDesc] = useState([]);
-
-    const { state } = useLocation();
-    const [notification, clearNotification] = useNotification(state?.message, state?.timeOut);
 
     useEffect(() => {
         blogPostService.getAll()
@@ -34,13 +29,8 @@ const Home = () => {
             });
     }, []);
 
-    useEffect(() => {
-        clearNotification();
-    }, [clearNotification]);
-
     return (
         <div className="container">
-            {notification}
             <div className="mainheading">
                 <h1 className="sitetitle">Blog System</h1>
                 <p className="lead">

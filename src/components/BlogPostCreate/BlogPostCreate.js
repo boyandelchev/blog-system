@@ -1,8 +1,9 @@
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import * as blogPostService from '../../services/blogPostService';
 import { AuthContext } from '../../contexts/AuthContext';
+import { NotificationContext } from '../../contexts/NotificationContext';
 import getAuthorNameFromUserEmail from '../../utils/getAuthorNameFromUserEmail';
 import useCategoriesState from '../../hooks/useCategoriesState';
 import useBlogPostChangeHandler from '../../hooks/useBlogPostChangeHandler';
@@ -13,12 +14,13 @@ import { EMPTY_FORM_ERROR, BLOG_POST } from '../../constants/constants';
 import './BlogPostCreate.css';
 
 const BlogPostCreate = () => {
+    const notificationMessage = 'You have successfully created a blog post.';
     const navigate = useNavigate();
     const { user } = useContext(AuthContext);
+    const { showNotificationSuccess } = useContext(NotificationContext);
     const authorName = getAuthorNameFromUserEmail(user.email);
     const { categories, categoriesError } = useCategoriesState();
     const { errors, setErrors, changeHandler } = useBlogPostChangeHandler();
-    const [notification] = useState({ message: 'You have successfully created a blog post.', timeOut: 3000 });
 
     const blogPostCreateHandler = (e) => {
         e.preventDefault();
@@ -47,7 +49,8 @@ const BlogPostCreate = () => {
             authorName,
         })
             .then(() => {
-                navigate('/', { state: notification });
+                showNotificationSuccess(notificationMessage);
+                navigate('/');
             })
             .catch(err => {
                 console.log(err.message);

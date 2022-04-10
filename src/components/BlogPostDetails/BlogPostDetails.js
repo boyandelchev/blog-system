@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 
 import * as blogPostService from '../../services/blogPostService';
 import * as commentService from '../../services/commentService';
@@ -7,7 +7,6 @@ import { AuthContext } from '../../contexts/AuthContext';
 import getDateFromDateInMilliseconds from '../../utils/getDateFromDateInMilliseconds';
 import getAuthorNameFromUserEmail from '../../utils/getAuthorNameFromUserEmail';
 import validateForm from '../../utils/validateForm';
-import useNotification from '../../hooks/useNotification';
 
 import { COMMENT_CONTENT_MIN_LENGTH, COMMENT_CONTENT_ERROR } from './BlogPostDetailsConstants';
 import { useCommentChangeHandler } from './BlogPostDetailsHelpers';
@@ -29,9 +28,6 @@ const BlogPostDetails = () => {
     const [blogPosts, setBlogPosts] = useState([]);
     const { error, setError, changeHandler } = useCommentChangeHandler();
     const [isDisabled, setIsDisabled] = useState(false);
-
-    const { state } = useLocation();
-    const [notification, clearNotification] = useNotification(state?.message, state?.timeOut);
 
     useEffect(() => {
         blogPostService.getOne(blogPostId)
@@ -62,10 +58,6 @@ const BlogPostDetails = () => {
                 console.log(err.message);
             });
     }, []);
-
-    useEffect(() => {
-        clearNotification();
-    }, [clearNotification]);
 
     const blogPostDetailsCommentFormHandler = (e) => {
         e.preventDefault();
@@ -112,7 +104,6 @@ const BlogPostDetails = () => {
         <>
             <div className="container">
                 <div className="row">
-                    {notification}
                     <div className="col-md-10 col-md-offset-2 col-xs-12">
                         <div className="mainheading">
                             <div className="row post-top-meta">
@@ -160,6 +151,7 @@ const BlogPostDetails = () => {
                             : ''
                         }
 
+                        <h5 className="text-center">Comments</h5>
                         {comments.length > 0
                             ? comments.map(x => <BlogPostDetailsComment key={x._id} comment={x} />)
                             : ''

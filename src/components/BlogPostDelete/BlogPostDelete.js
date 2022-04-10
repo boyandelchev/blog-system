@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import * as blogPostService from '../../services/blogPostService';
+import { NotificationContext } from '../../contexts/NotificationContext';
 import useBlogPostState from '../../hooks/useBlogPostState';
 import useCategoriesState from '../../hooks/useCategoriesState';
 
@@ -9,12 +10,13 @@ import './BlogPostDelete.css';
 import ConfirmDialog from '../common/ConfirmDialog';
 
 const BlogPostDelete = () => {
+    const notificationMessage = 'You have successfully deleted a blog post.';
     const navigate = useNavigate();
     const { blogPostId } = useParams();
+    const { showNotificationSuccess } = useContext(NotificationContext);
     const { blogPost, blogPostError } = useBlogPostState(blogPostId);
     const { categories, categoriesError } = useCategoriesState();
     const [error, setError] = useState('');
-    const [notification] = useState({ message: 'You have successfully deleted a blog post.', timeOut: 3000 });
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
     const blogPostDeleteDialogHandler = (e) => {
@@ -28,7 +30,8 @@ const BlogPostDelete = () => {
 
         blogPostService.deleteBlogPost(blogPostId)
             .then(() => {
-                navigate('/', { state: notification });
+                showNotificationSuccess(notificationMessage);
+                navigate('/');
             })
             .catch(err => {
                 console.log(err.message);

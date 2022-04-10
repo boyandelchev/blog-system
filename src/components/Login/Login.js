@@ -1,27 +1,22 @@
-import { useEffect, useContext } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import * as authService from '../../services/authService';
 import { AuthContext } from '../../contexts/AuthContext';
+import { NotificationContext } from '../../contexts/NotificationContext';
 import useLoginRegisterChangeHandler from '../../hooks/useLoginRegisterChangeHandler';
 import validateForm from '../../utils/validateForm';
 import debounce from '../../utils/debounce';
-import useNotification from '../../hooks/useNotification';
 import { EMPTY_FORM_ERROR } from '../../constants/constants';
 
 import './Login.css';
 
 const Login = () => {
+    const notificationMessage = 'You have successfully logged in.';
     const navigate = useNavigate();
     const { login } = useContext(AuthContext);
+    const { showNotificationSuccess } = useContext(NotificationContext);
     const { error, setError, changeHandler } = useLoginRegisterChangeHandler();
-
-    const { state } = useLocation();
-    const [notification, clearNotification] = useNotification(state?.message, state?.timeOut);
-
-    useEffect(() => {
-        clearNotification();
-    }, [clearNotification]);
 
     const loginHandler = (e) => {
         e.preventDefault();
@@ -42,7 +37,7 @@ const Login = () => {
         authService.login(email, password)
             .then(authData => {
                 login(authData);
-
+                showNotificationSuccess(notificationMessage);
                 navigate('/');
             })
             .catch(err => {
@@ -55,7 +50,6 @@ const Login = () => {
         <div className="container">
             <div className="row">
                 <div className="col-sm-12 offset-md-1 col-md-10 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-                    {notification}
                     <h2 className="heading-margin text-center">Login</h2>
                     <p className="error-login-message">{error}</p>
                     <form onSubmit={loginHandler} method="POST">

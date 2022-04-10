@@ -1,8 +1,9 @@
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import * as blogPostService from '../../services/blogPostService';
 import { AuthContext } from '../../contexts/AuthContext';
+import { NotificationContext } from '../../contexts/NotificationContext';
 import getAuthorNameFromUserEmail from '../../utils/getAuthorNameFromUserEmail';
 import useBlogPostState from '../../hooks/useBlogPostState';
 import useCategoriesState from '../../hooks/useCategoriesState';
@@ -14,14 +15,15 @@ import { EMPTY_FORM_ERROR, BLOG_POST } from '../../constants/constants';
 import './BlogPostEdit.css';
 
 const BlogPostEdit = () => {
+    const notificationMessage = 'You have successfully edited this blog post.';
     const navigate = useNavigate();
     const { blogPostId } = useParams();
     const { user } = useContext(AuthContext);
+    const { showNotificationSuccess } = useContext(NotificationContext);
     const authorName = getAuthorNameFromUserEmail(user.email);
     const { blogPost, setBlogPost, blogPostError } = useBlogPostState(blogPostId);
     const { categories, categoriesError } = useCategoriesState();
     const { errors, setErrors, changeHandler } = useBlogPostChangeHandler();
-    const [notification] = useState({ message: 'You have successfully edited this blog post.', timeOut: 3000 });
 
     const categoriesChangeHandler = (e) => {
         const selectedCategories = [...e.target.options]
@@ -59,7 +61,8 @@ const BlogPostEdit = () => {
             authorName,
         })
             .then(() => {
-                navigate(`/blog-post-details/${blogPostId}`, { state: notification });
+                showNotificationSuccess(notificationMessage);
+                navigate(`/blog-post-details/${blogPostId}`);
             })
             .catch(err => {
                 console.log(err.message);

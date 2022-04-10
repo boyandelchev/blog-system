@@ -1,25 +1,27 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import * as authService from '../../services/authService';
 import { AuthContext } from '../../contexts/AuthContext';
+import { NotificationContext } from '../../contexts/NotificationContext';
 
 const Logout = () => {
+    const notificationMessage = 'You have successfully logged out.';
     const navigate = useNavigate();
     const { logout } = useContext(AuthContext);
-    const [notification] = useState({ message: 'You have successfully logged out.', timeOut: 3000 });
+    const { showNotificationSuccess } = useContext(NotificationContext);
 
     useEffect(() => {
         authService.logout()
             .then(() => {
                 logout();
-
-                navigate('/login', { state: notification });
+                showNotificationSuccess(notificationMessage);
+                navigate('/login');
             })
             .catch(err => {
                 console.log(err.message);
             });
-    }, [logout, navigate, notification]);
+    }, [logout, navigate, showNotificationSuccess]);
 
 
     return null;
