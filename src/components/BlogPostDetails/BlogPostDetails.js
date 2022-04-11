@@ -13,6 +13,7 @@ import { useCommentChangeHandler } from './BlogPostDetailsHelpers';
 import BlogPostDetailsCommentForm from './BlogPostDetailsCommentForm';
 import BlogPostDetailsComment from './BlogPostDetailsComment';
 import BlogPostCard from './BlogPostCard';
+import ScrollToTopButton from '../common/ScrollToTopButton';
 import './BlogPostDetails.css';
 
 const BlogPostDetails = () => {
@@ -139,6 +140,8 @@ const BlogPostDetails = () => {
                             ? ownerButtons
                             : ''
                         )}
+
+                        <ScrollToTopButton />
 
                         <p className="error-blog-post-details-comment-message">{error}</p>
 
