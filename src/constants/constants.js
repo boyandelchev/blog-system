@@ -28,4 +28,5 @@ export const BLOG_POST = {
     titleError: 'Title must be between 2 and 100 characters long.',
     contentError: 'Content must be between 10 and 5000 characters long. Please create part 2 if longer.',
     imageURLError: 'Please provide a proper URL.',
+    categoriesError: 'Selected categories are incorrect!',
 };

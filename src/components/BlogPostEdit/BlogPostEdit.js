@@ -22,7 +22,7 @@ const BlogPostEdit = () => {
     const { showNotificationSuccess } = useContext(NotificationContext);
     const authorName = getAuthorNameFromUserEmail(user.email);
     const { blogPost, setBlogPost, blogPostError } = useBlogPostState(blogPostId);
-    const { categories, categoriesError } = useCategoriesState();
+    const { categories, categoriesError, setCategoriesError } = useCategoriesState();
     const { errors, setErrors, changeHandler } = useBlogPostChangeHandler();
 
     const categoriesChangeHandler = (e) => {
@@ -45,10 +45,15 @@ const BlogPostEdit = () => {
         let title = formData.get(BLOG_POST.titleName);
         let content = formData.get(BLOG_POST.contentName);
         let imageURL = formData.get(BLOG_POST.imageURLName);
-        let categories = formData.getAll(BLOG_POST.categoriesName);
+        let categoriesData = formData.getAll(BLOG_POST.categoriesName);
 
         if (title === '' || content === '' || imageURL === '') {
             setErrors(state => ({ ...state, generalError: EMPTY_FORM_ERROR }));
+            return;
+        }
+
+        if (categoriesData.length > 0 && !categoriesData.every(x => categories.includes(x))) {
+            setCategoriesError(BLOG_POST.categoriesError);
             return;
         }
 
@@ -57,7 +62,7 @@ const BlogPostEdit = () => {
             title,
             content,
             imageURL,
-            categories,
+            categories: categoriesData,
             authorName,
         })
             .then(() => {
